@@ -5,14 +5,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Infoservs — Lineārais gaismeklis (konfigurators)</title>
-  <link rel="stylesheet" href="styles.css"tājs) -->
+  styles.css
+
+  <!-- Three.js (WebGL skatītājs) -->
   https://unpkg.com/three@0.159.0/build/three.min.js</script>
 
   <!-- Cenu/jaudas loģika -->
   pricing.js</script>
 
   <!-- Mini RAL fallback (mazā karte) -->
-  <script srcjs</script>
+  ral-colors.js</script>
 
   <!-- Galvenais skripts -->
   main.js</script>
@@ -96,26 +98,31 @@
 
   <!-- PNG fallback (ja WebGL nestrādā) -->
   <section class="fallback">
-    <picture>
-      <!-- Ja ieliksi arī .webp, šis source jāpaliek pirmais; citādi droši dzēs -->
-      <!-- assets/img/linear_base.webp -->
-      <img id="productImg" srcng?v=1
-    </picture>
-    <div id="assetsCheck" class="note"></div>
+    <img id="productImg" src="assets/img/iv id="assetsCheck" class="note"></div>
   </section>
 
   <!-- Pilna RAL ielāde (lokāls + CDN) -->
   <script>
     (function loadFullRal() {
       const localUrl = 'assets/data/ral-classic.json';
-      const cdnUrl   = 'https://cdn.jsdelivr.net/gh/codebrainz/ral@master/ral-classic.json';
-      function setMap(map) { window.RAL_MAP_FULL = map; }
+      const cdnUrl   = 'https://cdn.jsdelivr.net/gh/runxel/colorizah@main/ral-classic.json'; // publisks JSON (RAL Classic) — HEX aptuvenības
+
+      function setMapFromRunxel(json) {
+        const arr = json?.colorsystem?.colors || [];
+        const map = {};
+        for (const c of arr) {
+          const code = `RAL${c.id}`;
+          const hex  = `#${String(c.hex).trim()}`;
+          map[code] = hex;
+        }
+        window.RAL_MAP_FULL = map;
+      }
 
       fetch(localUrl).then(r => {
         if (!r.ok) throw new Error('local RAL missing');
         return r.json();
-      }).then(setMap).catch(() => {
-        return fetch(cdnUrl).then(r => r.json()).then(setMap).catch(() => {
+      }).then(setMapFromRunxel).catch(() => {
+        return fetch(cdnUrl).then(r => r.json()).then(setMapFromRunxel).catch(() => {
           console.warn('Pilnais RAL nav pieejams; paliek mini karte.');
         });
       });
@@ -123,34 +130,3 @@
   </script>
 </body>
 </html>
-
-<script>
-  (function loadFullRal() {
-    // Lokālais (ja ieliksi failu repo)
-    const localUrl = 'assets/data/ral-classic.json';
-    // Publisks CDN (rezerves ielāde – strādā uzreiz):
-    const cdnUrl   = 'https://cdn.jsdelivr.net/gh/runxel/colorizah@main/ral-classic.json';
-
-    function setMapFromRunxel(json) {
-      // runxel/colorizah formāts: { "colorsystem": { "name": "RAL Classic", "colors": [ { "id":"1000","vanityname":"...","hex":"CDBA88" }, ... ] } }
-      const arr = json?.colorsystem?.colors || [];
-      const map = {};
-      for (const c of arr) {
-        const code = `RAL${c.id}`;
-        const hex  = `#${String(c.hex).trim()}`;
-        map[code] = hex;
-      }
-      window.RAL_MAP_FULL = map;
-    }
-
-    fetch(localUrl).then(r => {
-      if (!r.ok) throw new Error('local RAL missing');
-      return r.json();
-    }).then(setMapFromRunxel).catch(() => {
-      return fetch(cdnUrl).then(r => r.json()).then(setMapFromRunxel).catch(() => {
-        console.warn('Pilnais RAL nav pieejams; paliek mini karte.');
-      });
-    });
-  })();
-</script>
-
