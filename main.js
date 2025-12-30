@@ -1,4 +1,27 @@
 
+const state = {
+  length_mm: 1200,
+  cct: 3000,
+  dali: false,
+  suspend: false,
+  ral: 'RAL9003' // noklusējums
+};
+
+
+function setRal(code) {
+  state.ral = String(code || '').trim().toUpperCase();
+  const hex = getHexFromRal(state.ral);
+  bodyMat.color.set(hex);    // korpusa materiāls
+  updateSummary();
+  render();
+}
+
+function setLength(mm) {
+  state.length_mm = mm;
+  layoutByLength();          // mērogo korpusu + difūzoru, pārbīda gala vāciņus
+  updateSummary();
+  render();
+}
 
 function getHexFromRal(code) {
   const key = String(code || '').trim().toUpperCase();
