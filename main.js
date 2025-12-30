@@ -112,16 +112,16 @@ function updateModel() {
 // ======= PNG FALLBACK attēlu pārslēgšana (ja WebGL nav pieejams) =======
 const IMG = {
   withSuspension: {
-    RAL9003: 'assets/img/linear_white.png',
-    RAL9005: 'assets/img/linear_black.png',
-    ANODIZED: 'assets/img/linear_anodized.png',
-    default:  'assets/img/linear_base.png'
+    RAL9003: 'assets/img/linear_white.png?v=1',
+    RAL9005: 'assets/img/linear_black.png?v=1',
+    ANODIZED: 'assets/img/linear_anodized.png?v=1',
+    default:  'assets/img/linear_base.png?v=1'
   },
   noSuspension: {
-    RAL9003: 'assets/img/linear_white_no_suspension.png',
-    RAL9005: 'assets/img/linear_black_no_suspension.png',
-    ANODIZED: 'assets/img/linear_anodized_no_suspension.png',
-    default:  'assets/img/linear_base_no_suspension.png'
+    RAL9003: 'assets/img/linear_white_no_suspension.png?v=1',
+    RAL9005: 'assets/img/linear_black_no_suspension.png?v=1',
+    ANODIZED: 'assets/img/linear_anodized_no_suspension.png?v=1',
+    default:  'assets/img/linear_base_no_suspension.png?v=1'
   }
 };
 
@@ -193,7 +193,7 @@ ralList.addEventListener('click', (e) => {
   updateModel(); updateSummary(); updateFallbackImage();
 });
 
-// “Specifikācija” (TXT; nākamajā iterācijā — PDF)
+// Specifikācijas lejupielāde (TXT; nākamajā iterācijā PDF)
 document.getElementById('downloadSpec').addEventListener('click', () => {
   const spec = [
     'LINEĀRAIS GAISMEKLIS — SPECIFIKĀCIJA',
@@ -221,9 +221,33 @@ document.getElementById('requestQuote').addEventListener('click', () => {
   alert('Pieteikuma forma tiks pievienota nākamajā iterācijā.\nSKU: ' + makeSKU());
 });
 
-// Sākuma palaišana
+// Sākuma palaišana + aktīvu ceļu pārbaude
 window.addEventListener('DOMContentLoaded', () => {
   updateModel();
   updateSummary();
   updateFallbackImage();
+  checkAssets();
 });
+
+// ======= Palīgs: pārbauda, vai attēli tiešām ielādējas =======
+function checkAssets() {
+  const expected = [
+    'assets/img/linear_base.png',
+    'assets/img/linear_black.png',
+    'assets/img/linear_white.png',
+    'assets/img/linear_anodized.png',
+    'assets/img/linear_base_no_suspension.png',
+    'assets/img/linear_black_no_suspension.png',
+    'assets/img/linear_white_no_suspension.png',
+    'assets/img/linear_anodized_no_suspension.png'
+  ];
+  const div = document.getElementById('assetsCheck');
+  let html = '<strong>Attēlu ceļu pārbaude:</strong><br>';
+  let pending = expected.length;
+  expected.forEach(src => {
+    const img = new Image();
+    img.onload = () => { html += `✅ OK: ${src}<br>`; if (--pending===0) div.innerHTML = html; };
+    img.onerror = () => { html += `❌ NAV ATRODAMS (404?): ${src}<br>`; if (--pending===0) div.innerHTML = html; };
+    img.src = src + '?v=' + Date.now(); // cache-bust
+  });
+}
