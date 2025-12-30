@@ -123,3 +123,34 @@
   </script>
 </body>
 </html>
+
+<script>
+  (function loadFullRal() {
+    // Lokālais (ja ieliksi failu repo)
+    const localUrl = 'assets/data/ral-classic.json';
+    // Publisks CDN (rezerves ielāde – strādā uzreiz):
+    const cdnUrl   = 'https://cdn.jsdelivr.net/gh/runxel/colorizah@main/ral-classic.json';
+
+    function setMapFromRunxel(json) {
+      // runxel/colorizah formāts: { "colorsystem": { "name": "RAL Classic", "colors": [ { "id":"1000","vanityname":"...","hex":"CDBA88" }, ... ] } }
+      const arr = json?.colorsystem?.colors || [];
+      const map = {};
+      for (const c of arr) {
+        const code = `RAL${c.id}`;
+        const hex  = `#${String(c.hex).trim()}`;
+        map[code] = hex;
+      }
+      window.RAL_MAP_FULL = map;
+    }
+
+    fetch(localUrl).then(r => {
+      if (!r.ok) throw new Error('local RAL missing');
+      return r.json();
+    }).then(setMapFromRunxel).catch(() => {
+      return fetch(cdnUrl).then(r => r.json()).then(setMapFromRunxel).catch(() => {
+        console.warn('Pilnais RAL nav pieejams; paliek mini karte.');
+      });
+    });
+  })();
+</script>
+
