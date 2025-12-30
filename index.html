@@ -5,28 +5,26 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Infoservs — Lineārais gaismeklis (konfigurators)</title>
-  styles.css
+  <link rel="stylesheet" href="styles.css"tājs) -->
+  https://unpkg.com/three@0.159.0/build/three.min.js</script>
 
-  <!-- Three.js no CDN (nepieciešams WebGL skatam) -->
-  <script src="https://unpkg.com/three@/three.min.js</script>
-
-  <!-- Cenu un jaudas loģika -->
+  <!-- Cenu/jaudas loģika -->
   pricing.js</script>
 
-  <!-- Mini RAL fallback (mazā karte ar pāris toņiem) -->
-  ral-colors.js</script>
+  <!-- Mini RAL fallback (mazā karte) -->
+  <script srcjs</script>
 
-  <!-- Galvenais skripts (pēdējais), kas palaiž konfiguratoru -->
+  <!-- Galvenais skripts -->
   main.js</script>
 </head>
 <body>
   <header class="top">
     <h1>Lineārie LED gaismekļi — konfigurators</h1>
-    <p>230V ar iebūvētu pārveidotāju · Garuma soļi: 600 / 1200 / 1800 / 2400 / 3000 · CCT: 3000K / 4000K</p>
+    <p>230V ar iebūvētu pārveidotāju · Garumi: 600 / 1200 / 1800 / 2400 / 3000 · CCT: 3000K / 4000K</p>
   </header>
 
   <main class="wrap">
-    <!-- WebGL skatītājs (ja pieejams) -->
+    <!-- WebGL skatītājs -->
     <section class="viewer-wrap">
       <canvas id="viewer"></canvas>
     </section>
@@ -90,3 +88,38 @@
       </div>
 
       <div class="cta">
+        <button id="downloadSpec">Lejupielādēt specifikāciju</button>
+        <button class="secondary" id="requestQuote">Pasūtīt ar uzstādīšanu</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- PNG fallback (ja WebGL nestrādā) -->
+  <section class="fallback">
+    <picture>
+      <!-- Ja ieliksi arī .webp, šis source jāpaliek pirmais; citādi droši dzēs -->
+      <!-- assets/img/linear_base.webp -->
+      <img id="productImg" srcng?v=1
+    </picture>
+    <div id="assetsCheck" class="note"></div>
+  </section>
+
+  <!-- Pilna RAL ielāde (lokāls + CDN) -->
+  <script>
+    (function loadFullRal() {
+      const localUrl = 'assets/data/ral-classic.json';
+      const cdnUrl   = 'https://cdn.jsdelivr.net/gh/codebrainz/ral@master/ral-classic.json';
+      function setMap(map) { window.RAL_MAP_FULL = map; }
+
+      fetch(localUrl).then(r => {
+        if (!r.ok) throw new Error('local RAL missing');
+        return r.json();
+      }).then(setMap).catch(() => {
+        return fetch(cdnUrl).then(r => r.json()).then(setMap).catch(() => {
+          console.warn('Pilnais RAL nav pieejams; paliek mini karte.');
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
