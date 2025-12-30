@@ -1,36 +1,4 @@
 
-const state = {
-  length_mm: 1200,
-  cct: 3000,
-  dali: false,
-  suspend: false,
-  ral: 'RAL9003' // noklusējums
-};
-
-
-function setRal(code) {
-  state.ral = String(code || '').trim().toUpperCase();
-  const hex = getHexFromRal(state.ral);
-  bodyMat.color.set(hex);    // korpusa materiāls
-  updateSummary();
-  render();
-}
-
-function setLength(mm) {
-  state.length_mm = mm;
-  layoutByLength();          // mērogo korpusu + difūzoru, pārbīda gala vāciņus
-  updateSummary();
-  render();
-}
-
-function getHexFromRal(code) {
-  const key = String(code || '').trim().toUpperCase();
-  // Vispirms meklē pilnajā JSON
-  if (window.RAL_MAP && window.RAL_MAP[key]) return window.RAL_MAP[key];
-  // Fallback: mini karte vai neitrāls pelēks
-  return (typeof hexFromRAL === 'function') ? hexFromRAL(key) : '#CCCCCC';
-}
-
 // ======= State =======
 const BASE_LENGTH_MM = 1200;
 
@@ -39,7 +7,7 @@ const state = {
   cct: 3000,
   dali: false,
   suspend: false,
-  ral: 'RAL9003'
+  ral: 'RAL9003' // noklusējums (balts)
 };
 
 // ======= UI hooks =======
@@ -61,7 +29,7 @@ function updateSummary() {
   skuEl.textContent   = makeSKU();
 }
 
-// ======= Three.js =======
+// ======= WebGL (Three.js) =======
 const canvas = document.getElementById('viewer');
 const renderer = new THREE.WebGLRenderer({ canvas, antialias:true });
 const scene = new THREE.Scene();
@@ -75,13 +43,12 @@ const keyLight = new THREE.DirectionalLight(0xffffff, 0.9);
 keyLight.position.set(1,1,2);
 scene.add(keyLight);
 
-// Floor gaisma/vides tonis (neliels)
 const hemi = new THREE.HemisphereLight(0x222233, 0x111111, 0.4);
 scene.add(hemi);
 
 // Modelis (vienkāršots profils)
 const bodyGeo = new THREE.BoxGeometry(1.2, 0.05, 0.08); // bāze ≈ 1200mm
-const bodyMat = new THREE.MeshStandardMaterial({ color: hexFromRAL(state.ral), metalness: 0.6, roughness: 0.35 });
+const bodyMat = new THREE.MeshStandardMaterial({ color: getHexFromRal(state.ral), metalness: 0.6, roughness: 0.35 });
 const bodyMesh = new THREE.Mesh(bodyGeo, bodyMat);
 scene.add(bodyMesh);
 
@@ -91,7 +58,7 @@ const diffMesh = new THREE.Mesh(diffGeo, diffMat);
 diffMesh.position.y = 0.02;
 scene.add(diffMesh);
 
-// Gala “vāciņi” (vienkārši kubi)
+// Gala “vāciņi”
 const capMat = new THREE.MeshStandardMaterial({ color: 0x888888, metalness:0.5, roughness:0.4 });
 const capGeo = new THREE.BoxGeometry(0.02, 0.06, 0.09);
 const capL = new THREE.Mesh(capGeo, capMat);
@@ -115,30 +82,12 @@ function layoutByLength() {
   bodyMesh.scale.x = scaleX;
   diffMesh.scale.x = scaleX;
 
-  // Gala vāciņu pozīcija: puse no garuma (metros) pret bāzi (1.2m)
   const half = (state.length_mm / 1000) / 2;
   capL.position.set(-half, 0, 0);
   capR.position.set( half, 0, 0);
 
-  // Troses nobīde nedaudz iekšpusē
   ropeL.position.x = -Math.max(half - 0.2, 0.2);
   ropeR.position.x =  Math.max(half - 0.2, 0.2);
-}
-
-function updateModel() {
-  // Garums
-  layoutByLength();
-
-  // Krāsa
-  bodyMat.color.set(hexFromRAL(state.ral));
-
-  // Piekare
-  suspensionGroup.visible = state.suspend;
-
-  // CCT — emisive tonis
-  diffMat.emissive.setHex(state.cct === 3000 ? 0x332200 : 0x333333);
-
-  render();
 }
 
 function render() {
@@ -152,13 +101,44 @@ function render() {
 
 window.addEventListener('resize', render);
 
+function updateModel() {
+  layoutByLength();
+  bodyMat.color.set(getHexFromRal(state.ral));      // RAL krāsa
+  suspensionGroup.visible = state.suspend;          // Piekare ON/OFF
+  diffMat.emissive.setHex(state.cct === 3000 ? 0x332200 : 0x333333); // CCT sajūta
+  render();
+}
+
+// ======= PNG FALLBACK attēlu pārslēgšana (ja WebGL nav pieejams) =======
+const IMG = {
+  withSuspension: {
+    RAL9003: 'assets/img/linear_white.png',
+    RAL9005: 'assets/img/linear_black.png',
+    ANODIZED: 'assets/img/linear_anodized.png',
+    default:  'assets/img/linear_base.png'
+  },
+  noSuspension: {
+    RAL9003: 'assets/img/linear_white_no_suspension.png',
+    RAL9005: 'assets/img/linear_black_no_suspension.png',
+    ANODIZED: 'assets/img/linear_anodized_no_suspension.png',
+    default:  'assets/img/linear_base_no_suspension.png'
+  }
+};
+
+function updateFallbackImage() {
+  const map = state.suspend ? IMG.withSuspension : IMG.noSuspension;
+  const src = map[state.ral] || map.default;
+  const img = document.getElementById('productImg');
+  if (img) img.src = src;
+}
+
 // ======= UI Events =======
 document.querySelectorAll('#lengths button').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('#lengths button').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     state.length_mm = parseInt(btn.getAttribute('data-l'), 10);
-    updateModel(); updateSummary();
+    updateModel(); updateSummary(); updateFallbackImage();
   });
 });
 
@@ -176,27 +156,44 @@ document.getElementById('dali').addEventListener('change', (e) => {
 
 document.getElementById('suspend').addEventListener('change', (e) => {
   state.suspend = e.target.checked;
-  updateModel(); updateSummary();
+  updateModel(); updateSummary(); updateFallbackImage();
 });
 
+// RAL pogas (ātrās)
 document.querySelectorAll('.ral-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     state.ral = btn.dataset.ral;
     document.querySelectorAll('.ral-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     document.getElementById('ralInput').value = state.ral;
-    updateModel(); updateSummary();
+    updateModel(); updateSummary(); updateFallbackImage();
   });
 });
 
-document.getElementById('ralInput').addEventListener('change', (e) => {
-  state.ral = e.target.value.trim().toUpperCase();
-  // noņem aktīvo no pogām, jo ievade manuāla
-  document.querySelectorAll('.ral-btn').forEach(b => b.classList.remove('active'));
-  updateModel(); updateSummary();
+// RAL ievade (manuāla) + auto-complete
+const ralInput = document.getElementById('ralInput');
+const ralList  = document.getElementById('ralList');
+
+ralInput.addEventListener('input', () => {
+  const q = ralInput.value.trim().toUpperCase();
+  const map = window.RAL_MAP_FULL || {}; // ja pilnais ielādējies
+  const keys = Object.keys(map).length ? Object.keys(map) : Object.keys(RAL_MAP_MINI);
+  const matches = keys.filter(k => k.includes(q)).slice(0, 20);
+  ralList.innerHTML = matches.map(k =>
+    `<button data-code="${k}" style="background:${getHexFromRal(k)};color:#111">${k}</button>`
+  ).join('');
 });
 
-// “PDF” speclapa — pagaidām teksts; vēlāk nomainīsim uz īstu PDF
+ralList.addEventListener('click', (e) => {
+  const code = e.target.dataset.code;
+  if (!code) return;
+  ralInput.value = code;
+  state.ral = code;
+  ralList.innerHTML = '';
+  updateModel(); updateSummary(); updateFallbackImage();
+});
+
+// “Specifikācija” (TXT; nākamajā iterācijā — PDF)
 document.getElementById('downloadSpec').addEventListener('click', () => {
   const spec = [
     'LINEĀRAIS GAISMEKLIS — SPECIFIKĀCIJA',
@@ -214,7 +211,7 @@ document.getElementById('downloadSpec').addEventListener('click', () => {
   const blob = new Blob([spec], {type: 'text/plain'});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = `spec_${makeSKU()}.txt`; // vēlāk būs .pdf
+  a.download = `spec_${makeSKU()}.txt`;
   a.click();
   URL.revokeObjectURL(a.href);
 });
@@ -224,11 +221,9 @@ document.getElementById('requestQuote').addEventListener('click', () => {
   alert('Pieteikuma forma tiks pievienota nākamajā iterācijā.\nSKU: ' + makeSKU());
 });
 
-// Sākums
-function init() {
-  // izmērs un pirmais renderis
-  render();
+// Sākuma palaišana
+window.addEventListener('DOMContentLoaded', () => {
   updateModel();
   updateSummary();
-}
-init();
+  updateFallbackImage();
+});
