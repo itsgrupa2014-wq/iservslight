@@ -5,18 +5,11 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Infoservs — Lineārais gaismeklis (konfigurators)</title>
+
   styles.css
-
-  <!-- Three.js (WebGL skatītājs) -->
   https://unpkg.com/three@0.159.0/build/three.min.js</script>
-
-  <!-- Cenu/jaudas loģika -->
-  pricing.js</script>
-
-  <!-- Mini RAL fallback (mazā karte) -->
+  <script src/script>
   ral-colors.js</script>
-
-  <!-- Galvenais skripts -->
   main.js</script>
 </head>
 <body>
@@ -26,12 +19,10 @@
   </header>
 
   <main class="wrap">
-    <!-- WebGL skatītājs -->
     <section class="viewer-wrap">
       <canvas id="viewer"></canvas>
     </section>
 
-    <!-- Vadības panelis -->
     <section class="panel">
       <h2>Konfigurācija</h2>
 
@@ -72,11 +63,9 @@
       <div class="row">
         <label>Korpusa krāsa (RAL)</label>
         <div class="options">
-          <!-- Ātrās pogas -->
           <button class="ral-btn" data-ral="RAL9003" style="background:#F5F5F5;color:#111;">RAL9003</button>
           <button class="ral-btn" data-ral="RAL9005" style="background:#0A0A0A;">RAL9005</button>
           <button class="ral-btn" data-ral="ANODIZED" style="background:#B0B0B0;color:#111;">ANODIZED</button>
-          <!-- Manuāla ievade + auto-complete -->
           <input type="text" id="ralInput" placeholder="Ievadi RAL, piem. RAL9010" />
         </div>
         <div id="ralList" class="options"></div>
@@ -96,16 +85,16 @@
     </section>
   </main>
 
-  <!-- PNG fallback (ja WebGL nestrādā) -->
   <section class="fallback">
-    <img id="productImg" src="assets/img/iv id="assetsCheck" class="note"></div>
+    assets/img/linear_base.png?v=1
+    <div id="assetsCheck" class="note"></div>
   </section>
 
-  <!-- Pilna RAL ielāde (lokāls + CDN) -->
+  <!-- Pilna RAL ielāde (lokālais + CDN, ja vajadzīgs) -->
   <script>
     (function loadFullRal() {
       const localUrl = 'assets/data/ral-classic.json';
-      const cdnUrl   = 'https://cdn.jsdelivr.net/gh/runxel/colorizah@main/ral-classic.json'; // publisks JSON (RAL Classic) — HEX aptuvenības
+      const cdnUrl   = 'https://cdn.jsdelivr.net/gh/runxel/colorizah@main/ral-classic.json';
 
       function setMapFromRunxel(json) {
         const arr = json?.colorsystem?.colors || [];
