@@ -4,32 +4,34 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Lineārais gaismeklis — Konfigurators</title>
+  <title>Infoservs — Lineārais gaismeklis (konfigurators)</title>
   styles.css
-  <!-- Three.js no CDN (static, bez build) -->
-  https://unpkg.com/three@0.159.0/build/three.min.js</script>
+
+  <!-- Three.js no CDN (nepieciešams WebGL skatam) -->
+  <script src="https://unpkg.com/three@/three.min.js</script>
+
+  <!-- Cenu un jaudas loģika -->
+  pricing.js</script>
+
+  <!-- Mini RAL fallback (mazā karte ar pāris toņiem) -->
+  ral-colors.js</script>
+
+  <!-- Galvenais skripts (pēdējais), kas palaiž konfiguratoru -->
+  main.js</script>
 </head>
 <body>
   <header class="top">
-    <h1>Lineārie gaismekļi — konfigurators</h1>
-    <p>230V, iebūvēts pārveidotājs · Garuma soļi: 600/1200/1800/2400/3000 mm · CCT: 3000K/4000K</p>
+    <h1>Lineārie LED gaismekļi — konfigurators</h1>
+    <p>230V ar iebūvētu pārveidotāju · Garuma soļi: 600 / 1200 / 1800 / 2400 / 3000 · CCT: 3000K / 4000K</p>
   </header>
 
-<script>
-  // Ielādē pilnu RAL kartei
-  fetch('assets/data/ral-classic.json')
-    .then(r => r.json())
-    .then(map => { window.RAL_MAP = map; })
-    .catch(() => { window.RAL_MAP = {}; /* fallback */ });
-</script>
-
-main.js</script>
-
   <main class="wrap">
+    <!-- WebGL skatītājs (ja pieejams) -->
     <section class="viewer-wrap">
       <canvas id="viewer"></canvas>
     </section>
 
+    <!-- Vadības panelis -->
     <section class="panel">
       <h2>Konfigurācija</h2>
 
@@ -70,12 +72,15 @@ main.js</script>
       <div class="row">
         <label>Korpusa krāsa (RAL)</label>
         <div class="options">
+          <!-- Ātrās pogas -->
           <button class="ral-btn" data-ral="RAL9003" style="background:#F5F5F5;color:#111;">RAL9003</button>
           <button class="ral-btn" data-ral="RAL9005" style="background:#0A0A0A;">RAL9005</button>
           <button class="ral-btn" data-ral="ANODIZED" style="background:#B0B0B0;color:#111;">ANODIZED</button>
+          <!-- Manuāla ievade + auto-complete -->
           <input type="text" id="ralInput" placeholder="Ievadi RAL, piem. RAL9010" />
         </div>
-        <div class="note">Ekrāna krāsa ir aptuvena — RAL tonis var atšķirties reālajā materiālā.</div>
+        <div id="ralList" class="options"></div>
+        <div class="note">Ekrānā redzamās RAL krāsas ir aptuvenas.</div>
       </div>
 
       <div class="summary">
@@ -85,18 +90,3 @@ main.js</script>
       </div>
 
       <div class="cta">
-        <button id="downloadSpec">Lejupielādēt PDF specifikāciju</button>
-        <button class="secondary" id="requestQuote">Pasūtīt ar uzstādīšanu</button>
-      </div>
-    </section>
-  </main>
-
-  <footer class="foot">
-    <small>© Infoservs — Lineārie gaismekļi</small>
-  </footer>
-
-  pricing.js</script>
-  ral-colors.js</script>
-  <ain.js</script>
-</body>
-</html>
