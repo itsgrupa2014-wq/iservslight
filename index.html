@@ -1,22 +1,19 @@
 
 <!DOCTYPE html>
 <html lang="lv">
-
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Infoservs — Lineārais gaismeklis (konfigurators)</title>
 
   <!-- CSS -->
-  styles.css
-
-  <!-- Three.js (WebGL skatītājs) -->
-  https://unpkg.com/three@0.159.0/build/three.min.js</script>
+  <link rel="stylesheet" href="WebGL skatītājs) -->
+  <script src="https://unpkg.com/three@0.hree.min.js</script>
 
   <!-- Tavi skripti -->
   pricing.js</script>
   ral-colors.js</script>
-  main.js</script>
+  <ain.js</script>
 </head>
 <body>
   <header class="top">
@@ -25,10 +22,12 @@
   </header>
 
   <main class="wrap">
+    <!-- WebGL skatītājs -->
     <section class="viewer-wrap">
       <canvas id="viewer"></canvas>
     </section>
 
+    <!-- Vadības panelis -->
     <section class="panel">
       <h2>Konfigurācija</h2>
 
@@ -91,37 +90,13 @@
     </section>
   </main>
 
+  <!-- PNG fallback (ja WebGL nav) -->
   <section class="fallback">
     assets/img/linear_base.png?v=1
     <div id="assetsCheck" class="note"></div>
   </section>
 
-  <!-- Pilna RAL ielāde (lokālais + CDN, ja vajadzīgs) -->
+  <!-- Pilna RAL ielāde (lokālais + CDN) -->
   <script>
     (function loadFullRal() {
       const localUrl = 'assets/data/ral-classic.json';
-      const cdnUrl   = 'https://cdn.jsdelivr.net/gh/runxel/colorizah@main/ral-classic.json';
-
-      function setMapFromRunxel(json) {
-        const arr = json?.colorsystem?.colors || [];
-        const map = {};
-        for (const c of arr) {
-          const code = `RAL${c.id}`;
-          const hex  = `#${String(c.hex).trim()}`;
-          map[code] = hex;
-        }
-        window.RAL_MAP_FULL = map;
-      }
-
-      fetch(localUrl).then(r => {
-        if (!r.ok) throw new Error('local RAL missing');
-        return r.json();
-      }).then(setMapFromRunxel).catch(() => {
-        return fetch(cdnUrl).then(r => r.json()).then(setMapFromRunxel).catch(() => {
-          console.warn('Pilnais RAL nav pieejams; paliek mini karte.');
-        });
-      });
-    })();
-  </script>
-</body>
-</html>
