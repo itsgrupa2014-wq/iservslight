@@ -1,4 +1,13 @@
 
+
+function getHexFromRal(code) {
+  const key = String(code || '').trim().toUpperCase();
+  // Vispirms meklē pilnajā JSON
+  if (window.RAL_MAP && window.RAL_MAP[key]) return window.RAL_MAP[key];
+  // Fallback: mini karte vai neitrāls pelēks
+  return (typeof hexFromRAL === 'function') ? hexFromRAL(key) : '#CCCCCC';
+}
+
 // ======= State =======
 const BASE_LENGTH_MM = 1200;
 
