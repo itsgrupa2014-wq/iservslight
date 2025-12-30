@@ -15,6 +15,16 @@
     <p>230V, iebūvēts pārveidotājs · Garuma soļi: 600/1200/1800/2400/3000 mm · CCT: 3000K/4000K</p>
   </header>
 
+<script>
+  // Ielādē pilnu RAL kartei
+  fetch('assets/data/ral-classic.json')
+    .then(r => r.json())
+    .then(map => { window.RAL_MAP = map; })
+    .catch(() => { window.RAL_MAP = {}; /* fallback */ });
+</script>
+
+main.js</script>
+
   <main class="wrap">
     <section class="viewer-wrap">
       <canvas id="viewer"></canvas>
