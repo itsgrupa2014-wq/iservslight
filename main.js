@@ -1,9 +1,26 @@
 
 document.addEventListener('DOMContentLoaded', () => {
-  const colorButtons = document.querySelectorAll('.ral-btn');
+  const lengthButtons = document.querySelectorAll('#lengths button');
+  const colorButtons  = document.querySelectorAll('.ral-btn');
   const suspendCheckbox = document.getElementById('suspend');
   const productImg = document.getElementById('product');
 
+  // Atjauno attēlu pēc izvēlēm
+  function updateImage() {
+    const color = document.querySelector('.ral-btn.active')?.dataset.color || 'base';
+    const suspended = suspendCheckbox?.checked ? '_no_suspension' : '';
+    productImg.src = `./assets/img/linear_${color}${suspended}.png`;
+  }
+
+  // Garums – UI tikai (attēlam garums nav atsevišķi faili)
+  lengthButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      lengthButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  // Krāsa
   colorButtons.forEach(btn => {
     btn.addEventListener('click', () => {
       colorButtons.forEach(b => b.classList.remove('active'));
@@ -12,11 +29,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  suspendCheckbox.addEventListener('change', updateImage);
+  // Trosītes
+  if (suspendCheckbox) suspendCheckbox.addEventListener('change', updateImage);
 
-  function updateImage() {
-    const color = document.querySelector('.ral-btn.active').dataset.color;
-    const suspend = suspendCheckbox.checked ? '_no_suspension' : '';
-    productImg.src = `./assets/img/linear_${color}${suspend}.png`;
-  }
+  // Sākotnējais attēls
+  updateImage();
 });
