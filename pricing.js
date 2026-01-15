@@ -1,5 +1,4 @@
 
-// Vienkāršs piemērs cenas aprēķinam
 const prices = {
   600: 20,
   1200: 30,
