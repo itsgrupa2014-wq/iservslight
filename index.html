@@ -6,16 +6,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Infoservs — Lineārais gaismeklis (konfigurators)</title>
 
-  <!-- Fonts -->
-  https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap
+  <!-- Google Fonts (ATSEVIŠĶS LINK TAGS) -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&
 
-  <!-- CSS -->
+  <!-- Stili (ATSEVIŠĶS LINK TAGS) -->
   styles.css
 
-  <!-- (Nav obligāti vajadzīgs, bet atstājam nākotnes WebGL) -->
-  <script src="https://unpkg.com/three@0.160.0/build/three.min.js<!-- JS (mūsu skripti) -->
+  <!-- (Ne obligāti vajadzīgs šobrīd) Three.js -->
+  <script/unpkg.com/three@0.160.0/build/three.min.js</script>
+
+  <!-- Mūsu skripti -->
   pricing.js</script>
-  <script src="ral-colors.jsain.js</script>
+  ral-colors.js</script>
+  main.js</script>
 </head>
 <body>
   <header class="top">
@@ -26,9 +29,7 @@
   <main class="wrap">
     <!-- Attēlu skatītājs -->
     <section class="viewer-wrap">
-      <!-- Noklusētais attēls -->
-      assets/img/linear_base.png
-      <noscript><div class="note">Lai redzētu konfiguratora attēlus, lūdzu, ieslēdziet JavaScript.</div></noscript>
+      <img id="productImage" src="assets/img/linear_base.png" alt="Lineārais gaismekguratora attēlus, lūdzu, ieslēdziet JavaScript.</div></noscript>
     </section>
 
     <!-- Vadības panelis -->
