@@ -6,52 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Infoservs — Lineārais gaismeklis (konfigurators)</title>
 
-  <!-- Fonts (drīkst atstāt; pat ja nestrādās, nekas netraucēs) -->
-  https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap
-
-  <!-- STILI (IEKŠĀ) -->
-  <style>
-    :root{
-      --brand:#0078d7; --bg:#f7f8fa; --text:#2b2b2b; --muted:#6b7280; --card:#ffffff; --border:#e5e7eb;
-    }
-    *{box-sizing:border-box}
-    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);
-      font-family:'Roboto',system-ui,-apple-system,Segoe UI,Arial,sans-serif}
-    header.top{background:#1f2937;color:#fff;padding:28px 16px;text-align:center}
-    header.top h1{margin:0 0 6px;font-size:28px;font-weight:700}
-    header.top p{margin:0;opacity:.9}
-    main.wrap{
-      max-width:1200px;margin:24px auto;padding:0 16px;
-      display:grid;grid-template-columns:1.1fr .9fr;gap:20px
-    }
-    @media (max-width: 960px){ main.wrap{grid-template-columns:1fr} }
-
-    .viewer-wrap{
-      background:var(--card);border:1px solid var(--border);border-radius:12px;
-      padding:16px;display:flex;align-items:center;justify-content:center;min-height:320px;
-      max-height:420px;overflow:hidden
-    }
-    .viewer-wrap img{max-width:100%;max-height:100%;object-fit:contain;border-radius:8px;
-      box-shadow:0 8px 24px rgba(0,0,0,.08)}
-    .panel{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px}
-    .panel h2{margin:0 0 12px 0;font-size:20px}
-    .row{margin-bottom:16px}
-    .row>label{display:block;margin-bottom:6px;font-weight:600}
-    .options{display:flex;flex-wrap:wrap;gap:8px}
-    .options button{
-      appearance:none;border:1px solid var(--border);background:#fff;color:var(--text);
-      padding:10px 14px;border-radius:8px;cursor:pointer;transition:.15s ease
-    }
-    .options button:hover{border-color:var(--brand)}
-    .options button.active{background:var(--brand);border-color:var(--brand);color:#fff}
-    .opt{display:flex;align-items:center;gap:8px;color:var(--text)}
-    .note{color:var(--muted);font-size:14px}
-    .summary{margin-top:14px;padding-top:10px;border-top:1px dashed var(--border);display:grid;gap:8px}
-    .cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
-    .cta button{border:none;padding:10px 16px;border-radius:8px;cursor:pointer}
-    #downloadSpec{background:var(--brand);color:#fff}
-    .secondary{background:#eef2f7;color:#111}
-  </style>
+  <!-- Fonts -->
+  <link-colors.js" defer></script>
+  main.js</script>
 </head>
 <body>
   <header class="top">
@@ -60,14 +17,7 @@
   </header>
 
   <main class="wrap">
-    <!-- Attēlu skatītājs -->
-    <section class="viewer-wrap">
-      <!-- NOKLUSĒTAIS ATTĒLS – šis ceļš atbilst Tavai mapei -->
-      <img id="productImage" src="assets/img/linear_base.png" alt="Lineārais gaisnfiguratora attēlus, ieslēdziet JavaScript.</div></noscript>
-    </section>
-
-    <!-- Vadības panelis -->
-    <section class="panel">
+   section class="panel">
       <h2>Konfigurācija</h2>
 
       <div class="row">
@@ -126,75 +76,5 @@
       </div>
     </section>
   </main>
-
-  <!-- SCRIPTS (IEKŠĀ) -->
-  <script>
-    // ====== Vienkāršs cenu/sku modelis + attēlu maiņa ======
-    const imageElement    = document.getElementById('productImage');
-    const suspendCheckbox = document.getElementById('suspend');
-    const daliCheckbox    = document.getElementById('dali');
-    const colorButtons    = document.querySelectorAll('.ral-btn');
-    const lengthButtons   = document.querySelectorAll('#lengths button');
-    const priceElement    = document.getElementById('price');
-    const powerElement    = document.getElementById('power');
-    const skuElement      = document.getElementById('sku');
-
-    let currentColor  = 'base';
-    let currentLength = 1200;
-
-    function updateImage() {
-      // Ja piekare nav atzīmēta -> _no_suspension
-      const suffix = suspendCheckbox && !suspendCheckbox.checked ? '_no_suspension' : '';
-      imageElement.src = `assets/img/linear_${currentColor}${suffix}.png`;
-    }
-
-    function updateSummary() {
-      const basePrice   = 50;                        // bāzes cena 600mm
-      const lengthFact  = currentLength / 600;       // 600=1x, 1200=2x, ...
-      const colorExtra  = (currentColor !== 'base') ? 10 : 0;
-      const daliExtra   = daliCheckbox && daliCheckbox.checked ? 5 : 0;
-      const suspendExt  = suspendCheckbox && suspendCheckbox.checked ? 3 : 0;
-      const price       = basePrice * lengthFact + colorExtra + daliExtra + suspendExt;
-      const power       = (currentLength / 300) * 5; // aptuvens W aprēķins (pielāgo vēlāk)
-      const sku         = `LIN-${currentLength}-${currentColor}${suspendCheckbox && suspendCheckbox.checked ? '-S' : ''}${daliCheckbox && daliCheckbox.checked ? '-DALI' : ''}`;
-
-      priceElement.textContent = price.toFixed(2) + ' €';
-      powerElement.textContent = power.toFixed(1);
-      skuElement.textContent   = sku;
-    }
-
-    // Krāsu pogas
-    colorButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        colorButtons.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        currentColor = btn.dataset.color;
-        updateImage();
-        updateSummary();
-      });
-    });
-
-    // Garuma pogas
-    lengthButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        lengthButtons.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        currentLength = parseInt(btn.dataset.l, 10);
-        updateSummary();
-      });
-    });
-
-    // Checkbox listeneri
-    [suspendCheckbox, daliCheckbox].forEach(chk => {
-      if (chk) chk.addEventListener('change', () => {
-        updateImage();
-        updateSummary();
-      });
-    });
-
-    // Inicializācija
-    updateImage();
-    updateSummary();
-  </script>
 </body>
 </html>
