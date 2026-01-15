@@ -6,8 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Infoservs — Lineārais gaismeklis (konfigurators)</title>
 
-  <!-- Iekļauts fonts (neobligāts). Ja kas, var izņemt. -->
-  <link href="https://fonts.googleapis.com/cssoto:wght@400;500;700&display=swap
+  <!-- Fonts (drīkst atstāt; pat ja nestrādās, nekas netraucēs) -->
+  https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap
 
   <!-- STILI (IEKŠĀ) -->
   <style>
@@ -62,9 +62,8 @@
   <main class="wrap">
     <!-- Attēlu skatītājs -->
     <section class="viewer-wrap">
-      <!-- NOKLUSĒTAIS ATTĒLS (existē tavā assets/img) -->
-      assets/img/linear_base.png
-      <noscript><div class="note">Lai redzētu konfiguratora attēlus, ieslēdziet JavaScript.</div></noscript>
+      <!-- NOKLUSĒTAIS ATTĒLS – šis ceļš atbilst Tavai mapei -->
+      <img id="productImage" src="assets/img/linear_base.png" alt="Lineārais gaisnfiguratora attēlus, ieslēdziet JavaScript.</div></noscript>
     </section>
 
     <!-- Vadības panelis -->
@@ -130,7 +129,7 @@
 
   <!-- SCRIPTS (IEKŠĀ) -->
   <script>
-    // ====== Vienkāršs cenu/sku modelis ======
+    // ====== Vienkāršs cenu/sku modelis + attēlu maiņa ======
     const imageElement    = document.getElementById('productImage');
     const suspendCheckbox = document.getElementById('suspend');
     const daliCheckbox    = document.getElementById('dali');
@@ -146,9 +145,6 @@
     function updateImage() {
       // Ja piekare nav atzīmēta -> _no_suspension
       const suffix = suspendCheckbox && !suspendCheckbox.checked ? '_no_suspension' : '';
-      // Pieejamie faili tavā /assets/img:
-      // linear_base.png, linear_base_no_suspension.png,
-      // linear_white(.png/_no_suspension), linear_black(.png/_no_suspension), linear_anodized(.png/_no_suspension)
       imageElement.src = `assets/img/linear_${currentColor}${suffix}.png`;
     }
 
@@ -159,7 +155,7 @@
       const daliExtra   = daliCheckbox && daliCheckbox.checked ? 5 : 0;
       const suspendExt  = suspendCheckbox && suspendCheckbox.checked ? 3 : 0;
       const price       = basePrice * lengthFact + colorExtra + daliExtra + suspendExt;
-      const power       = (currentLength / 300) * 5; // aptuvens W aprēķins
+      const power       = (currentLength / 300) * 5; // aptuvens W aprēķins (pielāgo vēlāk)
       const sku         = `LIN-${currentLength}-${currentColor}${suspendCheckbox && suspendCheckbox.checked ? '-S' : ''}${daliCheckbox && daliCheckbox.checked ? '-DALI' : ''}`;
 
       priceElement.textContent = price.toFixed(2) + ' €';
@@ -202,4 +198,3 @@
   </script>
 </body>
 </html>
-``
