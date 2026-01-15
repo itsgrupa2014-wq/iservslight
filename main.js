@@ -11,22 +11,20 @@ const skuElement = document.getElementById('sku');
 let currentColor = 'base';
 let currentLength = 1200;
 
-// Attēla maiņa
 function updateImage() {
   const suffix = suspendCheckbox && !suspendCheckbox.checked ? '_no_suspension' : '';
   imageElement.src = `assets/img/linear_${currentColor}${suffix}.png`;
 }
 
-// Cena + SKU
 function updateSummary() {
-  const basePrice = 50; // EUR
-  const lengthFactor = currentLength / 600; // piem. 600mm = 1x, 1200mm = 2x
+  const basePrice = 50;
+  const lengthFactor = currentLength / 600;
   const colorExtra = currentColor !== 'base' ? 10 : 0;
   const daliExtra = daliCheckbox.checked ? 5 : 0;
   const suspendExtra = suspendCheckbox.checked ? 3 : 0;
 
   const price = basePrice * lengthFactor + colorExtra + daliExtra + suspendExtra;
-  const power = (currentLength / 300) * 5; // aptuvena jauda W
+  const power = (currentLength / 300) * 5;
   const sku = `LIN-${currentLength}-${currentColor}${suspendCheckbox.checked ? '-S' : ''}${daliCheckbox.checked ? '-DALI' : ''}`;
 
   priceElement.textContent = price.toFixed(2) + ' €';
@@ -34,7 +32,6 @@ function updateSummary() {
   skuElement.textContent = sku;
 }
 
-// Krāsu pogas
 colorButtons.forEach(btn => {
   btn.addEventListener('click', () => {
     colorButtons.forEach(b => b.classList.remove('active'));
@@ -45,7 +42,6 @@ colorButtons.forEach(btn => {
   });
 });
 
-// Garuma pogas
 lengthButtons.forEach(btn => {
   btn.addEventListener('click', () => {
     lengthButtons.forEach(b => b.classList.remove('active'));
@@ -55,7 +51,6 @@ lengthButtons.forEach(btn => {
   });
 });
 
-// Checkbox
 [suspendCheckbox, daliCheckbox].forEach(chk => {
   chk.addEventListener('change', () => {
     updateImage();
@@ -63,6 +58,5 @@ lengthButtons.forEach(btn => {
   });
 });
 
-// Sākotnējais stāvoklis
 updateImage();
 updateSummary();
