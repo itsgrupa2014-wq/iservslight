@@ -1,32 +1,26 @@
 
-// Cenu tabula pēc garuma (bez PVN)
-const PRICE_BY_LENGTH = {
-  600: 120,
-  1200: 180,
-  1800: 220,
-  2400: 250,
-  3000: 310
+// Vienkāršs piemērs cenas aprēķinam
+const prices = {
+  600: 20,
+  1200: 30,
+  1800: 40,
+  2400: 50,
+  3000: 60
 };
 
-// DALI piemaksa pagaidām nav
-const DALI_SURCHARGE = 0;
+document.addEventListener('DOMContentLoaded', () => {
+  const priceEl = document.getElementById('price');
+  const powerEl = document.getElementById('power');
+  const skuEl = document.getElementById('sku');
 
-// W/m (piemērs; aizstāj ar jūsu reālo vērtību)
-const POWER_W_PER_M = 12;
+  const lengthButtons = document.querySelectorAll('#lengths button');
 
-/**
- * Aprēķina cenu (bez PVN)
- */
-function calcPrice(lengthMM, dali /*bool*/) {
-  const base = PRICE_BY_LENGTH[lengthMM] || 0;
-  const extra = dali ? DALI_SURCHARGE : 0;
-  return Math.round(base + extra);
-}
-
-/**
- * Aprēķina jaudu (W) pēc garuma
- */
-function calcPower(lengthMM) {
-  const m = lengthMM / 1000;
-  return Math.round(POWER_W_PER_M * m);
-}
+  lengthButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const length = btn.dataset.l;
+      priceEl.textContent = prices[length] + ' €';
+      powerEl.textContent = (length / 100) * 4; // aptuvena jauda
+      skuEl.textContent = `LED-${length}`;
+    });
+  });
+});
