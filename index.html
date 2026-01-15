@@ -6,21 +6,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Infoservs — Lineārais gaismeklis (konfigurators)</title>
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display- CSS -->
-  <link rel="stylesheet" href bibliotēka -->
-  <script src="httpsthree@0.160.0/build/three.min.js</script>
+  <!-- Fonts -->
+  https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap
 
-  <!-- Tavi skripti -->
+  <!-- CSS -->
+  styles.css
+
+  <!-- (Nav obligāti vajadzīgs, bet atstājam nākotnes WebGL) -->
+  <script src="https://unpkg.com/three@0.160.0/build/three.min.js<!-- JS (mūsu skripti) -->
   pricing.js</script>
-  <script src="ral-colors.js" deferLED gaismekļi — konfigurators</h1>
+  <script src="ral-colors.jsain.js</script>
+</head>
+<body>
+  <header class="top">
+    <h1>Lineārie LED gaismekļi — konfigurators</h1>
     <p>230V ar iebūvētu pārveidotāju · Garumi: 600 / 1200 / 1800 / 2400 / 3000 · CCT: 3000K / 4000K</p>
   </header>
 
   <main class="wrap">
     <!-- Attēlu skatītājs -->
     <section class="viewer-wrap">
+      <!-- Noklusētais attēls -->
       assets/img/linear_base.png
+      <noscript><div class="note">Lai redzētu konfiguratora attēlus, lūdzu, ieslēdziet JavaScript.</div></noscript>
     </section>
 
     <!-- Vadības panelis -->
@@ -64,6 +72,7 @@
       <div class="row">
         <label>Korpusa krāsa</label>
         <div class="options">
+          <button class="ral-btn active" data-color="base">Bāze</button>
           <button class="ral-btn" data-color="white">Balts</button>
           <button class="ral-btn" data-color="black">Melns</button>
           <button class="ral-btn" data-color="anodized">Anodēts</button>
@@ -84,3 +93,4 @@
   </main>
 </body>
 </html>
+``
