@@ -7,10 +7,10 @@
   <title>Infoservs — Lineārais gaismeklis (konfigurators)</title>
 
   <!-- CSS -->
-  style.css
+  styles.css
 
   <!-- Three.js bibliotēka -->
-  https://unpkg.com/three@0.160.0/build/three.min.js</script>
+  https://unpkg.com/three@0.160.0/build/three.min.js
 
   <!-- Tavi skripti -->
   pricing.js</script>
@@ -71,7 +71,7 @@
         <label>Korpusa krāsa (RAL)</label>
         <div class="options">
           <button class="ral-btn" data-ral="RAL9003" style="background:#F5F5F5;color:#111;">RAL9003</button>
-          <button class="ral-btn" data-ral="RAL9005" style="background:#0A0A0A;"></button>
+          <button class="ral-btn" data-ral="RAL9005" style="background:#0A0A0A;color:#FFF;">RAL9005</button>
           <button class="ral-btn" data-ral="ANODIZED" style="background:#B0B0B0;color:#111;">ANODIZED</button>
           <input type="text" id="ralInput" placeholder="Ievadi RAL, piem. RAL9010" />
         </div>
@@ -94,11 +94,7 @@
 
   <!-- PNG fallback (ja WebGL nav) -->
   <section class="fallback">
-    assets/img/linear_base.png?v=1
-    <div id="assetsCheck" class="note"></div>
-  </section>
-
-  <!-- Pilna RAL ielāde -->
+    <img src="assets/img/linear_base.png" alt="Lineārais gaismeklis" style="max-width:100%;height:autoa RAL ielāde -->
   <script>
     (function loadFullRal() {
       const localUrl = 'assets/data/ral-classic.json';
