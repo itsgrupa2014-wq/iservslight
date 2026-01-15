@@ -38,13 +38,8 @@ header.top {
   margin-bottom: 15px;
 }
 
-.options button,
-.options input[type="checkbox"],
-.options input[type="radio"] {
+.options button {
   margin-right: 10px;
-}
-
-button {
   padding: 8px 12px;
   border: none;
   background: #0078d7;
