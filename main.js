@@ -1,17 +1,8 @@
 
 document.addEventListener('DOMContentLoaded', () => {
-  const lengthButtons = document.querySelectorAll('#lengths button');
   const colorButtons = document.querySelectorAll('.ral-btn');
   const suspendCheckbox = document.getElementById('suspend');
   const productImg = document.getElementById('product');
-
-  lengthButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      lengthButtons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      updateImage();
-    });
-  });
 
   colorButtons.forEach(btn => {
     btn.addEventListener('click', () => {
