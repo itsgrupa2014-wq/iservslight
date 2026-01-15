@@ -6,12 +6,52 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Infoservs — Lineārais gaismeklis (konfigurators)</title>
 
-  <!-- Fonts -->
- .css">
+  <!-- Iekļauts fonts (neobligāts). Ja kas, var izņemt. -->
+  <link href="https://fonts.googleapis.com/cssoto:wght@400;500;700&display=swap
 
-  <!-- JS -->
-  pricing.js</script>
-  <script src="ral-colors.js" defer/script>
+  <!-- STILI (IEKŠĀ) -->
+  <style>
+    :root{
+      --brand:#0078d7; --bg:#f7f8fa; --text:#2b2b2b; --muted:#6b7280; --card:#ffffff; --border:#e5e7eb;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);
+      font-family:'Roboto',system-ui,-apple-system,Segoe UI,Arial,sans-serif}
+    header.top{background:#1f2937;color:#fff;padding:28px 16px;text-align:center}
+    header.top h1{margin:0 0 6px;font-size:28px;font-weight:700}
+    header.top p{margin:0;opacity:.9}
+    main.wrap{
+      max-width:1200px;margin:24px auto;padding:0 16px;
+      display:grid;grid-template-columns:1.1fr .9fr;gap:20px
+    }
+    @media (max-width: 960px){ main.wrap{grid-template-columns:1fr} }
+
+    .viewer-wrap{
+      background:var(--card);border:1px solid var(--border);border-radius:12px;
+      padding:16px;display:flex;align-items:center;justify-content:center;min-height:320px;
+      max-height:420px;overflow:hidden
+    }
+    .viewer-wrap img{max-width:100%;max-height:100%;object-fit:contain;border-radius:8px;
+      box-shadow:0 8px 24px rgba(0,0,0,.08)}
+    .panel{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px}
+    .panel h2{margin:0 0 12px 0;font-size:20px}
+    .row{margin-bottom:16px}
+    .row>label{display:block;margin-bottom:6px;font-weight:600}
+    .options{display:flex;flex-wrap:wrap;gap:8px}
+    .options button{
+      appearance:none;border:1px solid var(--border);background:#fff;color:var(--text);
+      padding:10px 14px;border-radius:8px;cursor:pointer;transition:.15s ease
+    }
+    .options button:hover{border-color:var(--brand)}
+    .options button.active{background:var(--brand);border-color:var(--brand);color:#fff}
+    .opt{display:flex;align-items:center;gap:8px;color:var(--text)}
+    .note{color:var(--muted);font-size:14px}
+    .summary{margin-top:14px;padding-top:10px;border-top:1px dashed var(--border);display:grid;gap:8px}
+    .cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+    .cta button{border:none;padding:10px 16px;border-radius:8px;cursor:pointer}
+    #downloadSpec{background:var(--brand);color:#fff}
+    .secondary{background:#eef2f7;color:#111}
+  </style>
 </head>
 <body>
   <header class="top">
@@ -20,14 +60,146 @@
   </header>
 
   <main class="wrap">
+    <!-- Attēlu skatītājs -->
     <section class="viewer-wrap">
+      <!-- NOKLUSĒTAIS ATTĒLS (existē tavā assets/img) -->
       assets/img/linear_base.png
+      <noscript><div class="note">Lai redzētu konfiguratora attēlus, ieslēdziet JavaScript.</div></noscript>
     </section>
 
+    <!-- Vadības panelis -->
     <section class="panel">
       <h2>Konfigurācija</h2>
-      <!-- Šeit nāk konfigurācijas saturs -->
+
+      <div class="row">
+        <label>Garums</label>
+        <div class="options" id="lengths">
+          <button data-l="600">600 mm</button>
+          <button data-l="1200" class="active">1200 mm</button>
+          <button data-l="1800">1800 mm</button>
+          <button data-l="2400">2400 mm</button>
+          <button data-l="3000">3000 mm</button>
+        </div>
+      </div>
+
+      <div class="row">
+        <label>CCT (Krāsas temperatūra)</label>
+        <div class="options" id="cct">
+          <label class="opt"><input type="radio" name="cct" value="3000" checked> 3000K</label>
+          <label class="opt"><input type="radio" name="cct" value="4000"> 4000K</label>
+        </div>
+      </div>
+
+      <div class="row">
+        <label>Vadība</label>
+        <div class="options">
+          <label class="opt"><input type="checkbox" id="dali"> DALI</label>
+          <span class="note">Pagaidām bez piemaksas</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <label>Montāža</label>
+        <div class="options">
+          <label class="opt"><input type="checkbox" id="suspend"> Ar trosītēm (piekare)</label>
+        </div>
+      </div>
+
+      <div class="row">
+        <label>Korpusa krāsa</label>
+        <div class="options">
+          <button class="ral-btn active" data-color="base">Bāze</button>
+          <button class="ral-btn" data-color="white">Balts</button>
+          <button class="ral-btn" data-color="black">Melns</button>
+          <button class="ral-btn" data-color="anodized">Anodēts</button>
+        </div>
+      </div>
+
+      <div class="summary">
+        <div><strong>Cena (bez PVN):</strong> <span id="price">—</span></div>
+        <div><strong>Jauda (apr.):</strong> <span id="power">—</span> W</div>
+        <div><strong>SKU:</strong> <span id="sku">—</span></div>
+      </div>
+
+      <div class="cta">
+        <button id="downloadSpec">Lejupielādēt specifikāciju</button>
+        <button class="secondary" id="requestQuote">Pasūtīt ar uzstādīšanu</button>
+      </div>
     </section>
   </main>
+
+  <!-- SCRIPTS (IEKŠĀ) -->
+  <script>
+    // ====== Vienkāršs cenu/sku modelis ======
+    const imageElement    = document.getElementById('productImage');
+    const suspendCheckbox = document.getElementById('suspend');
+    const daliCheckbox    = document.getElementById('dali');
+    const colorButtons    = document.querySelectorAll('.ral-btn');
+    const lengthButtons   = document.querySelectorAll('#lengths button');
+    const priceElement    = document.getElementById('price');
+    const powerElement    = document.getElementById('power');
+    const skuElement      = document.getElementById('sku');
+
+    let currentColor  = 'base';
+    let currentLength = 1200;
+
+    function updateImage() {
+      // Ja piekare nav atzīmēta -> _no_suspension
+      const suffix = suspendCheckbox && !suspendCheckbox.checked ? '_no_suspension' : '';
+      // Pieejamie faili tavā /assets/img:
+      // linear_base.png, linear_base_no_suspension.png,
+      // linear_white(.png/_no_suspension), linear_black(.png/_no_suspension), linear_anodized(.png/_no_suspension)
+      imageElement.src = `assets/img/linear_${currentColor}${suffix}.png`;
+    }
+
+    function updateSummary() {
+      const basePrice   = 50;                        // bāzes cena 600mm
+      const lengthFact  = currentLength / 600;       // 600=1x, 1200=2x, ...
+      const colorExtra  = (currentColor !== 'base') ? 10 : 0;
+      const daliExtra   = daliCheckbox && daliCheckbox.checked ? 5 : 0;
+      const suspendExt  = suspendCheckbox && suspendCheckbox.checked ? 3 : 0;
+      const price       = basePrice * lengthFact + colorExtra + daliExtra + suspendExt;
+      const power       = (currentLength / 300) * 5; // aptuvens W aprēķins
+      const sku         = `LIN-${currentLength}-${currentColor}${suspendCheckbox && suspendCheckbox.checked ? '-S' : ''}${daliCheckbox && daliCheckbox.checked ? '-DALI' : ''}`;
+
+      priceElement.textContent = price.toFixed(2) + ' €';
+      powerElement.textContent = power.toFixed(1);
+      skuElement.textContent   = sku;
+    }
+
+    // Krāsu pogas
+    colorButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        colorButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentColor = btn.dataset.color;
+        updateImage();
+        updateSummary();
+      });
+    });
+
+    // Garuma pogas
+    lengthButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        lengthButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentLength = parseInt(btn.dataset.l, 10);
+        updateSummary();
+      });
+    });
+
+    // Checkbox listeneri
+    [suspendCheckbox, daliCheckbox].forEach(chk => {
+      if (chk) chk.addEventListener('change', () => {
+        updateImage();
+        updateSummary();
+      });
+    });
+
+    // Inicializācija
+    updateImage();
+    updateSummary();
+  </script>
 </body>
 </html>
+``
