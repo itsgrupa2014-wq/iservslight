@@ -1,20 +1,100 @@
 
+body {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  background: #f9f9f9;
+  color: #333;
+}
+
+header.top {
+  text-align: center;
+  padding: 20px;
+  background: #222;
+  color: #fff;
+}
+
+header.top h1 {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+header.top p {
+  margin: 5px 0 0;
+  font-size: 1rem;
+}
+
+.wrap {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  margin: 20px auto;
+  gap: 20px;
+}
+
 .viewer-wrap {
   flex: 1;
   min-width: 300px;
-  text-align: center;
+  max-height: 400px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: #fff;
   border-radius: 8px;
   padding: 10px;
-  max-height: 400px; /* ierobežojam augstumu */
   overflow: hidden;
 }
 
 .viewer-wrap img {
   max-width: 100%;
   max-height: 100%;
-  object-fit: contain; /* saglabā proporcijas */
+  object-fit: contain;
+}
+
+.panel {
+  flex: 1;
+  min-width: 300px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.panel h2 {
+  margin-top: 0;
+}
+
+.row {
+  margin-bottom: 15px;
+}
+
+.options button {
+  margin: 5px;
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  background: #fff;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.options button.active {
+  background: #0078d7;
+  color: #fff;
+  border-color: #0078d7;
+}
+
+.cta button {
+  margin: 10px 5px 0;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.cta button#downloadSpec {
+  background: #0078d7;
+  color: #fff;
+}
+
+.cta button.secondary {
+  background: #eee;
 }
