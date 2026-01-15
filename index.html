@@ -6,14 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Infoservs — Lineārais gaismeklis (konfigurators)</title>
 
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;lay=swap
-
-  <!-- CSS -->
+  https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap
   styles.css
 
-  <!-- JS -->
-  <script src="pricing  <script src="ral-colors.jsain.js</script>
+  pricing.js</script>
+  ral-colors.js</script>
+  main.js</script>
 </head>
 <body>
   <header class="top">
@@ -22,69 +20,10 @@
   </header>
 
   <main class="wrap">
-    <!-- Attēlu skatītājs -->
     <section class="viewer-wrap">
-      <img id="g/linear_base.png
-    </section>
-
-    <!-- Vadības panelis -->
-    <section class="panel">
+      <img id="productImage" src="assets/img/linear_base.png" alt="Linenel">
       <h2>Konfigurācija</h2>
-
-      <div class="row">
-        <label>Garums</label>
-        <div class="options" id="lengths">
-          <button data-l="600">600 mm</button>
-          <button data-l="1200" class="active">1200 mm</button>
-          <button data-l="1800">1800 mm</button>
-          <button data-l="2400">2400 mm</button>
-          <button data-l="3000">3000 mm</button>
-        </div>
-      </div>
-
-      <div class="row">
-        <label>CCT (Krāsas temperatūra)</label>
-        <div class="options" id="cct">
-          <label class="opt"><input type="radio" name="cct" value="3000" checked> 3000K</label>
-          <label class="opt"><input type="radio" name="cct" value="4000"> 4000K</label>
-        </div>
-      </div>
-
-      <div class="row">
-        <label>Vadība</label>
-        <div class="options">
-          <label class="opt"><input type="checkbox" id="dali"> DALI</label>
-          <span class="note">Pagaidām bez piemaksas</span>
-        </div>
-      </div>
-
-      <div class="row">
-        <label>Montāža</label>
-        <div class="options">
-          <label class="opt"><input type="checkbox" id="suspend"> Ar trosītēm (piekare)</label>
-        </div>
-      </div>
-
-      <div class="row">
-        <label>Korpusa krāsa</label>
-        <div class="options">
-          <button class="ral-btn active" data-color="base">Bāze</button>
-          <button class="ral-btn" data-color="white">Balts</button>
-          <button class="ral-btn" data-color="black">Melns</button>
-          <button class="ral-btn" data-color="anodized">Anodēts</button>
-        </div>
-      </div>
-
-      <div class="summary">
-        <div><strong>Cena (bez PVN):</strong> <span id="price">—</span></div>
-        <div><strong>Jauda (apr.):</strong> <span id="power">—</span> W</div>
-        <div><strong>SKU:</strong> <span id="sku">—</span></div>
-      </div>
-
-      <div class="cta">
-        <button id="downloadSpec">Lejupielādēt specifikāciju</button>
-        <button class="secondary" id="requestQuote">Pasūtīt ar uzstādīšanu</button>
-      </div>
+      <!-- Konfigurācijas saturs -->
     </section>
   </main>
 </body>
