@@ -6,11 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Infoservs — Lineārais gaismeklis (konfigurators)</title>
 
-  <!-- CSS -->
-  styles.css
+  <!-- Google Fonts -->
+  https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap
 
-  <!-- Three.js bibliotēka -->
-  https://unpkg.com/three@0.160.0/build/three.min.js
+  <!-- CSS -->
+  <link rel="stylesheet" href="styles.css-->
+  https://unpkg.com/three@0.160.0/build/three.min.js</script>
 
   <!-- Tavi skripti -->
   pricing.js</script>
@@ -24,9 +25,8 @@
   </header>
 
   <main class="wrap">
-    <!-- WebGL skatītājs -->
-    <section class="viewer-wrap">
-      <canvas id="viewer"></canvas>
+    <!-- Attēlu skatītājs -->
+   ="productImage" src="assets/img/linear_base.png" alt="Lineārais gaismeklis">
     </section>
 
     <!-- Vadības panelis -->
@@ -70,13 +70,10 @@
       <div class="row">
         <label>Korpusa krāsa (RAL)</label>
         <div class="options">
-          <button class="ral-btn" data-ral="RAL9003" style="background:#F5F5F5;color:#111;">RAL9003</button>
-          <button class="ral-btn" data-ral="RAL9005" style="background:#0A0A0A;color:#FFF;">RAL9005</button>
-          <button class="ral-btn" data-ral="ANODIZED" style="background:#B0B0B0;color:#111;">ANODIZED</button>
-          <input type="text" id="ralInput" placeholder="Ievadi RAL, piem. RAL9010" />
+          <button class="ral-btn" data-color="white">Balts</button>
+          <button class="ral-btn" data-color="black">Melns</button>
+          <button class="ral-btn" data-color="anodized">Anodēts</button>
         </div>
-        <div id="ralList" class="options"></div>
-        <div class="note">Ekrānā redzamās RAL krāsas ir aptuvenas.</div>
       </div>
 
       <div class="summary">
@@ -91,15 +88,5 @@
       </div>
     </section>
   </main>
-
-  <!-- PNG fallback (ja WebGL nav) -->
-  <section class="fallback">
-    <img src="assets/img/linear_base.png" alt="Lineārais gaismeklis" style="max-width:100%;height:autoa RAL ielāde -->
-  <script>
-    (function loadFullRal() {
-      const localUrl = 'assets/data/ral-classic.json';
-      // Te var pievienot AJAX ielādi
-    })();
-  </script>
 </body>
 </html>
