@@ -26,6 +26,6 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateImage() {
     const color = document.querySelector('.ral-btn.active').dataset.color;
     const suspend = suspendCheckbox.checked ? '_no_suspension' : '';
-    productImg.src = `assets/img/linear_${color}${suspend}.png`;
+    productImg.src = `./assets/img/linear_${color}${suspend}.png`;
   }
 });
