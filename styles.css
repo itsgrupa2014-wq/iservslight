@@ -1,7 +1,64 @@
 
+/* Pamatstils */
+body {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  color: #222;
+}
+
+header.top {
+  padding: 24px 16px;
+}
+
+/* Izkārtojums */
+.wrap {
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  gap: 24px;
+  padding: 16px;
+}
+
+/* Attēlu skatītājs */
+.viewer-wrap {
+  display: flex;
+  align-items: start;
+  justify-content: center;
+}
 .viewer-wrap img {
-  max-width: 400px; /* Samazina lampas izmēru */
+  max-width: 380px;   /* ← samazini pēc vajadzības (piem., 320px) */
+  width: 100%;
   height: auto;
   display: block;
-  margin: 0 auto;
 }
+
+/* Panelis */
+.panel {
+  background: #fff;
+  padding: 16px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+}
+
+.row { margin-bottom: 14px; }
+.options { display: flex; gap: 8px; flex-wrap: wrap; }
+.opt { display: inline-flex; align-items: center; gap: 6px; }
+
+button {
+  padding: 8px 12px;
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+  border-radius: 6px;
+  cursor: pointer;
+}
+button.active { border-color: #2563eb; background: #eff6ff; }
+button.secondary { background: #eef2f7; }
+
+.summary { margin-top: 16px; display: grid; gap: 6px; }
+.cta { margin-top: 12px; display: flex; gap: 8px; }
+
+/* Mazākiem ekrāniem */
+@media (max-width: 800px) {
+  .wrap { grid-template-columns: 1fr; }
+  .viewer-wrap img { max-width: 320px; }
+}
+``
