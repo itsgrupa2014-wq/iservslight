@@ -6,12 +6,97 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Infoservs — Lineārais gaismeklis (konfigurators)</title>
 
-  <!-- Fonts -->
-  
-<script src=</script>
-./pricing.js</script>
-./main.js</script>
+  <!-- Fonts (nav obligāti; var atstāt vai dzēst) -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap    /* ====== Pamatstils ====== */
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: #1f2937;
+      background: #ffffff;
+      font-family: "Roboto", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+    }
+    header.top {
+      padding: 24px 16px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    h1 { margin: 0 0 6px; font-size: 28px; }
+    p  { margin: 6px 0 0; color: #374151; }
 
+    /* ====== Izkārtojums ====== */
+    .wrap {
+      display: grid;
+      grid-template-columns: 420px 1fr;
+      gap: 24px;
+      padding: 20px;
+      align-items: start;
+    }
+
+    /* ====== Attēlu skatītājs ====== */
+    .viewer-wrap {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      position: relative;
+    }
+    .viewer-wrap img {
+      max-width: 360px;   /* ← Samazini/Palielini pēc vajadzības (piem., 300px) */
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    #imgError {
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      right: 0;
+      transform: translateY(100%);
+      color: #b91c1c;
+      font-size: 12px;
+      text-align: center;
+      padding: 6px 8px;
+    }
+
+    /* ====== Vadības panelis ====== */
+    .panel {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 18px;
+    }
+    .panel h2 {
+      margin: 0 0 12px;
+      font-size: 20px;
+    }
+    .row { margin: 14px 0; }
+    .row > label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    .options { display: flex; gap: 8px; flex-wrap: wrap; }
+    .opt { display: inline-flex; align-items: center; gap: 6px; }
+
+    button {
+      padding: 8px 12px;
+      border: 1px solid #cbd5e1;
+      background: #f8fafc;
+      border-radius: 8px;
+      cursor: pointer;
+      font: inherit;
+    }
+    button:hover { background: #eef2f7; }
+    button.active { border-color: #2563eb; background: #eff6ff; }
+    button.secondary { background: #eef2f7; }
+
+    .summary { margin-top: 12px; display: grid; gap: 6px; }
+    .cta { margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap; }
+
+    /* ====== Mobilais ====== */
+    @media (max-width: 860px) {
+      .wrap { grid-template-columns: 1fr; }
+      .viewer-wrap img { max-width: 320px; }
+    }
+  </style>
 </head>
 <body>
   <header class="top">
@@ -22,17 +107,23 @@
   <main class="wrap">
     <!-- Attēlu skatītājs -->
     <section class="viewer-wrap">
-      <img src="./assets/img/linear_base.png" id="product" alt="Lineārais gaismek   <section class="panel">
+      <!-- Sākuma bilde (tiks pārrakstīta ar JS) -->
+      ./assets/img/linear_base.png
+      <div id="imgError"></div>
+    </section>
+
+    <!-- Vadības panelis -->
+    <section class="panel">
       <h2>Konfigurācija</h2>
 
       <div class="row">
         <label>Garums</label>
         <div class="options" id="lengths">
-          <button data-l="600">600 mm</button>
-          <button data-l="1200" class="active">1200 mm</button>
-          <button data-l="1800">1800 mm</button>
-          <button data-l="2400">2400 mm</button>
-          <button data-l="3000">3000 mm</button>
+          <button type="button" data-l="600">600 mm</button>
+          <button type="button" data-l="1200" class="active">1200 mm</button>
+          <button type="button" data-l="1800">1800 mm</button>
+          <button type="button" data-l="2400">2400 mm</button>
+          <button type="button" data-l="3000">3000 mm</button>
         </div>
       </div>
 
@@ -62,10 +153,10 @@
       <div class="row">
         <label>Korpusa krāsa</label>
         <div class="options">
-          <button class="ral-btn active" data-color="base">Bāze</button>
-          <button class="ral-btn" data-color="white">Balts</button>
-          <button class="ral-btn" data-color="black">Melns</button>
-          <button class="ral-btn" data-color="anodized">Anodēts</button>
+          <button type="button" class="ral-btn active" data-color="base">Bāze</button>
+          <button type="button" class="ral-btn" data-color="white">Balts</button>
+          <button type="button" class="ral-btn" data-color="black">Melns</button>
+          <button type="button" class="ral-btn" data-color="anodized">Anodēts</button>
         </div>
       </div>
 
@@ -76,11 +167,119 @@
       </div>
 
       <div class="cta">
-        <button id="downloadSpec">Lejupielādēt specifikāciju</button>
-        <button class="secondary" id="requestQuote">Pasūtīt ar uzstādīšanu</button>
+        <button type="button" id="downloadSpec">Lejupielādēt specifikāciju</button>
+        <button type="button" class="secondary" id="requestQuote">Pasūtīt ar uzstādīšanu</button>
       </div>
     </section>
   </main>
+
+  <script>
+    // ====== Konfiguratora loģika vienā failā ======
+    document.addEventListener('DOMContentLoaded', () => {
+      // ---- Elements un stāvoklis
+      const $ = (sel, root=document) => root.querySelector(sel);
+      const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+
+      const productImg = $('#product');
+      const imgErrorEl = $('#imgError');
+      const suspendCheckbox = $('#suspend');
+
+      const state = {
+        length: Number($('#lengths .active')?.dataset.l || 1200),
+        cct: ($('input[name="cct"]:checked')?.value || '3000'),
+        color: ($('.ral-btn.active')?.dataset.color || 'base'),
+        suspend: suspendCheckbox?.checked || false,
+        dali: $('#dali')?.checked || false
+      };
+
+      // ---- Cenas un jaudas kalkulators (vienkāršots)
+      const basePrices = { 600: 20, 1200: 30, 1800: 40, 2400: 55, 3000: 70 };
+      const priceEl = $('#price');
+      const powerEl = $('#power');
+      const skuEl = $('#sku');
+
+      function updateSummary() {
+        // Cena pēc garuma
+        const price = basePrices[state.length] ?? 0;
+        priceEl.textContent = price ? (price + ' €') : '—';
+
+        // Aptuvena jauda
+        const powerW = Math.round((state.length / 100) * 4); // ~4W/100mm
+        powerEl.textContent = powerW;
+
+        // SKU formāts: LED-<L>-<CCT>-<COLOR>[-S][-D]
+        let sku = `LED-${state.length}-${state.cct}-${state.color}`;
+        if (state.suspend) sku += '-S';
+        if (state.dali) sku += '-D';
+        skuEl.textContent = sku;
+      }
+
+      // ---- Attēla ceļa ģenerēšana
+      const IMAGE_BASE_PATH = './assets/img/'; // <- tavs attēlu ceļš
+      function buildImagePath() {
+        const suffix = state.suspend ? '_no_suspension' : '';
+        return `${IMAGE_BASE_PATH}linear_${state.color}${suffix}.png`;
+      }
+
+      function updateImage() {
+        const path = buildImagePath();
+        imgErrorEl.textContent = ''; // notīram iepriekšējo kļūdu
+
+        // Iestatām src, un, ja kļūda — parādām palīgu ar precīzu ceļu
+        productImg.onerror = () => {
+          imgErrorEl.textContent = `Bilde nav atrasta: ${path} — pārbaudi, vai fails un ceļš eksistē.`;
+        };
+        productImg.onload = () => { imgErrorEl.textContent = ''; };
+        productImg.src = path;
+      }
+
+      // ---- Klausītāji: garums, CCT, krāsa, piekare, DALI
+      $$('#lengths button').forEach(btn => {
+        btn.addEventListener('click', () => {
+          $$('#lengths button').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          state.length = Number(btn.dataset.l);
+          updateSummary();
+        });
+      });
+
+      $$('input[name="cct"]').forEach(r => {
+        r.addEventListener('change', () => {
+          state.cct = r.value;
+          updateSummary();
+        });
+      });
+
+      $$('.ral-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          $$('.ral-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          state.color = btn.dataset.color;
+          updateImage();
+          updateSummary();
+        });
+      });
+
+      if (suspendCheckbox) {
+        suspendCheckbox.addEventListener('change', () => {
+          state.suspend = suspendCheckbox.checked;
+          updateImage();
+          updateSummary();
+        });
+      }
+
+      const daliCheckbox = $('#dali');
+      if (daliCheckbox) {
+        daliCheckbox.addEventListener('change', () => {
+          state.dali = daliCheckbox.checked;
+          updateSummary();
+        });
+      }
+
+      // ---- Starta stāvoklis
+      updateImage();
+      updateSummary();
+    });
+  </script>
 </body>
 </html>
-``
