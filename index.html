@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>ISlight — Lineārie gaismekļi · Galvenā lapa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--bg:#0b1220; --ink:#e5e7eb; --muted:#9aa5b1; --card:#0f172a; --primary:#2563eb; --ring:#24324a; --accent:#0ea5e9}
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+    a{color:inherit}
+    header.hero{position:relative;overflow:hidden}
+    .topbar{position:sticky;top:0;z-index:50;background:rgba(11,18,32,.7);backdrop-filter: saturate(180%) blur(8px);border-bottom:1px solid #1e293b}
+    .container{max-width:1200px;margin:0 auto;padding:14px 16px}
+    .brand{display:flex;align-items:center;gap:10px}
+    .brand strong{font-size:18px}
+    .nav{display:flex;gap:16px;align-items:center}
+    .nav a{color:var(--muted);text-decoration:none}
+    .nav a:hover{color:#fff}
+    .hero-wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:20px;align-items:center;padding:48px 16px 24px}
+    .hero h1{font-size:40px;line-height:1.1;margin:10px 0 8px}
+    .hero p{color:var(--muted);font-size:16px;margin:0 0 18px}
+    .cta{display:flex;gap:12px;flex-wrap:wrap}
+    .btn{padding:12px 16px;border-radius:12px;border:1px solid #1f2a44;background:#111827;color:#e5e7eb;text-decoration:none}
+    .btn.primary{background:var(--primary);border-color:var(--primary);color:#fff}
+    .hero-card{background:linear-gradient(180deg,#101827 0%,#0b1220 100%);border:1px solid #1f2a44;border-radius:18px;padding:20px;display:flex;justify-content:center}
+    .hero-card img{max-width:520px;width:100%;height:auto;display:block}
+
+    section{padding:48px 16px}
+    h2{margin:0 0 14px;font-size:28px}
+    .cols-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .feature{background:var(--card);border:1px solid #1f2a44;border-radius:14px;padding:16px}
+    .feature h3{margin:0 0 6px;font-size:18px}
+    .feature p{margin:0;color:var(--muted)}
+
+    .gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+    .gallery img{width:100%;height:210px;object-fit:cover;border-radius:10px;border:1px solid #1f2a44;cursor:pointer}
+
+    .contact{display:grid;grid-template-columns:1.2fr .8fr;gap:20px}
+    .card{background:var(--card);border:1px solid #1f2a44;border-radius:16px;padding:18px}
+    .card p{margin:6px 0}
+    .kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+
+    footer{padding:28px 16px;border-top:1px solid #1f2a44;color:var(--muted)}
+    @media(max-width:980px){.hero-wrap{grid-template-columns:1fr}.cols-3{grid-template-columns:1fr}.gallery{grid-template-columns:repeat(2,1fr)}.contact{grid-template-columns:1fr}}
+
+    /* Lightbox controls */
+    .lb{position:fixed;inset:0;background:rgba(0,0,0,.86);display:flex;align-items:center;justify-content:center;z-index:1000}
+    .lb img{max-width:92vw;max-height:92vh;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+    .lb .ctrl{position:absolute;top:50%;transform:translateY(-50%);font-size:42px;line-height:1;color:#fff;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.25);width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;user-select:none}
+    .lb .prev{left:20px}
+    .lb .next{right:20px}
+    .lb .close{top:18px;right:18px;transform:none;font-size:28px}
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="container" style="display:flex;justify-content:space-between;align-items:center">
+      <div class="brand"><strong>ISlight</strong></div>
+      <nav class="nav">
+        <a href="#sakas">Sākums</a>
+        <a href="#pasutijums">Veikt pasūtījumu</a>
+        <a href="#atteli">Attēli</a>
+        <a href="#kontakti">Kontakti</a>
+        <a href="konfigurators.html" class="btn primary" style="padding:6px 12px">Veikt pasūtījumu</a>
+      </nav>
+    </div>
+  </div>
+
+  <header id="sakas" class="hero">
+    <div class="container hero-wrap">
+      <div class="hero-copy">
+        <h1>Lineārie LED gaismekļi</h1>
+        <p>Konfigurē pēc savas telpas: <strong>garums</strong>, <strong>korpusa krāsa (ar RAL)</strong>, <strong>montāža un piederumi</strong> — viss vienuviet, pasūtījums dažu klikšķu attālumā.</p>
+        <div class="cta">
+          <a class="btn primary" href="konfigurators.html">Veikt pasūtījumu</a>
+          <a class="btn" href="#atteli">Apskatīt attēlus</a>
+        </div>
+      </div>
+      <div class="hero-card">
+        <img src="./assets/img/linear_base.png" alt="Lineārais gaismeklis"/>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="container" id="pasutijums">
+      <h2>Veikt pasūtījumu</h2>
+      <div class="cta"><a href="konfigurators.html" class="btn primary">Veikt pasūtījumu</a><a href="konfigurators.html#Klienta%20dati" class="btn">Ievadīt klienta datus</a></div>
+      <div class="cols-3" style="margin-top:18px">
+        <div class="feature"><h3>RAL krāsas josla</h3><p>Velc pa spektru vai ievadi RAL kodu — tonis atainojas uzreiz.</p></div>
+        <div class="feature"><h3>Savienojuma kārbiņa</h3><p>Atzīmē vajadzību un izvēlies kārbiņas RAL krāsu.</p></div>
+        <div class="feature"><h3>Ar uzstādīšanu vai bez</h3><p>Konfiguratorā vari izvēlēties pasūtīt ar uzstādīšanu vai bez tās — cena tiek rēķināta automātiski.</p></div>
+      </div>
+    </section>
+
+    <section class="container" id="atteli">
+      <h2>Attēli</h2>
+      <div class="gallery" id="gal">
+        <img loading="lazy" decoding="async" src="./assets/img2/linear_1.jpg" alt="Attēls — linear_1.jpg"/>
+        <img loading="lazy" decoding="async" src="./assets/img2/linear_2.jpg" alt="Attēls — linear_2.jpg"/>
+        <img loading="lazy" decoding="async" src="./assets/img2/linear_3.jpg" alt="Attēls — linear_3.jpg"/>
+        <img loading="lazy" decoding="async" src="./assets/img2/linear_4.jpg" alt="Attēls — linear_4.jpg"/>
+        <img loading="lazy" decoding="async" src="./assets/img2/linear_5.jpg" alt="Attēls — linear_5.jpg"/>
+        <img loading="lazy" decoding="async" src="./assets/img2/linear_6.jpg" alt="Attēls — linear_6.jpg"/>
+        <img loading="lazy" decoding="async" src="./assets/img2/linear_7.jpeg" alt="Attēls — linear_7.jpeg"/>
+        <img loading="lazy" decoding="async" src="./assets/img2/linear_8.jpeg" alt="Attēls — linear_8.jpeg"/>
+        <img loading="lazy" decoding="async" src="./assets/img2/linear_9.jpeg" alt="Attēls — linear_9.jpeg"/>
+        <img loading="lazy" decoding="async" src="./assets/img2/linear_10.jpeg" alt="Attēls — linear_10.jpeg"/>
+        <img loading="lazy" decoding="async" src="./assets/img2/linear_11.jpeg" alt="Attēls — linear_11.jpeg"/>
+        <img loading="lazy" decoding="async" src="./assets/img2/linear_12.jpeg" alt="Attēls — linear_12.jpeg"/>
+        <img loading="lazy" decoding="async" src="./assets/img2/linear_13.jpeg" alt="Attēls — linear_13.jpeg"/>
+      </div>
+    </section>
+
+    <section class="container" id="kapec">
+      <h2>Kāpēc mēs</h2>
+      <div class="cols-3">
+        <div class="feature"><h3>Projektēšana un montāža</h3><p>Piedāvājam pilnu ciklu: no dizaina līdz uzstādīšanai.</p></div>
+        <div class="feature"><h3>Skaidrs process</h3><p>Reāllaika konfigurators, pārskatāms pasūtījums un apstiprinājums e‑pastā.</p></div>
+        <div class="feature"><h3>Elastīgas opcijas</h3><p>Garumi, CCT, DALI, piekare, vadi, kārbiņas — viss vienuviet.</p></div>
+      </div>
+    </section>
+
+    <section class="container contact" id="kontakti">
+      <div class="card">
+        <h2>Kontakti</h2>
+        <p><strong>SIA iSERVS</strong></p>
+        <p>Juridiskā adrese: Citadeles iela 1A, Rīga, LV‑1010</p>
+        <p>Tālrunis: <a href="tel:+37127378222">+371 27378222</a></p>
+        <p>E‑pasts: <a href="mailto:info@infoservs.lv">info@infoservs.lv</a></p>
+        <p class="muted" style="font-size:13px">Reģ. nr.: 40103811457</p>
+        <div class="cta" style="margin-top:12px"><a class="btn" href="mailto:info@infoservs.lv">Rakstīt e‑pastu</a><a class="btn" href="tel:+37127378222">Zvanīt</a></div>
+      </div>
+      <div class="card">
+        <h2>Par projektu</h2>
+        <p>ISlight ir modulāru lineāro LED gaismekļu platforma ar konfiguratoru: vari izvēlēties garumu (565–3000&nbsp;mm), CCT, korpusa krāsu (ar RAL), montāžu un piederumus, iegūstot cenu un SKU reāllaikā. Pasūtījumu var noformēt ar vai bez uzstādīšanas.</p>
+        <p class="muted">Papildus: pieejamas anodētas un RAL krāsas, DALI, piekare ar trosītēm, savienojuma kārbiņas krāsu saskaņošana. Pēc pieprasījuma — fotometrija (IES), garantija 24&nbsp;mēn., ražošanas/piegādes termiņi un montāžas darbi.</p>
+        <div class="cta"><a class="btn" href="konfigurators.html">Konfigurēt tagad</a></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">© <span id="y"></span> ISlight • Visi tiesības aizsargātas</div>
+  </footer>
+
+  <script>
+    // Lightbox ar nākamo/iepriekšējo + klaviatūru
+    (function(){
+      const gal = document.getElementById('gal'); if(!gal) return;
+      const imgs = Array.from(gal.querySelectorAll('img'));
+      let idx = 0, overlay, pic, prevBtn, nextBtn, closeBtn;
+      function render(){ pic.src = imgs[idx].src; }
+      function open(i){
+        idx = i; overlay = document.createElement('div'); overlay.className='lb';
+        pic = document.createElement('img');
+        prevBtn = document.createElement('div'); prevBtn.className='ctrl prev'; prevBtn.textContent='‹';
+        nextBtn = document.createElement('div'); nextBtn.className='ctrl next'; nextBtn.textContent='›';
+        closeBtn = document.createElement('div'); closeBtn.className='ctrl close'; closeBtn.textContent='×';
+        overlay.appendChild(pic); overlay.appendChild(prevBtn); overlay.appendChild(nextBtn); overlay.appendChild(closeBtn);
+        document.body.appendChild(overlay); render();
+        prevBtn.onclick = ()=>{ idx = (idx-1+imgs.length)%imgs.length; render(); };
+        nextBtn.onclick = ()=>{ idx = (idx+1)%imgs.length; render(); };
+        closeBtn.onclick = ()=>{ document.body.removeChild(overlay); overlay=null; };
+        overlay.addEventListener('click', (e)=>{ if(e.target===overlay) { document.body.removeChild(overlay); overlay=null; }});
+        window.addEventListener('keydown', keyNav);
+      }
+      function keyNav(e){ if(!overlay) return; if(e.key==='ArrowRight'){ nextBtn.click(); } else if(e.key==='ArrowLeft'){ prevBtn.click(); } else if(e.key==='Escape'){ closeBtn.click(); } }
+      gal.addEventListener('click', (e)=>{ if(e.target.tagName==='IMG'){ open(imgs.indexOf(e.target)); }});
+    })();
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
+
+  <!-- Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "ISlight / iSERVS SIA",
+    "address": {"@type":"PostalAddress","streetAddress":"Citadeles iela 1A","addressLocality":"Rīga","postalCode":"LV-1010","addressCountry":"LV"},
+    "telephone": "+37127378222",
+    "email": "info@infoservs.lv"
+  }
+  </script>
+</body>
+</html>
