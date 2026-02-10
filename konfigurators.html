@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ISlight — Lineārie LED gaismekļi · konfigurators</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ===== Theme (match index.html) ===== */
+    :root{--bg:#0b1220; --ink:#e5e7eb; --muted:#9aa5b1; --card:#0f172a; --primary:#2563eb; --ring:#24324a; --accent:#0ea5e9}
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+
+    /* Page layout */
+    main{padding:26px 16px}
+    .container{max-width:1200px;margin:0 auto}
+    .grid{display:grid;grid-template-columns:520px 1fr;gap:28px;align-items:start}
+    @media (max-width:980px){.grid{grid-template-columns:1fr}}
+
+    /* Viewer */
+    .viewer{position:sticky;top:24px}
+    .viewer-card{background:linear-gradient(180deg,#101827 0%,#0b1220 100%);border:1px solid #1f2a44;border-radius:16px;padding:20px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+    .product-wrap{position:relative;display:flex;justify-content:center;width:100%}
+    .product-wrap img{max-width:440px;width:100%;height:auto;display:block}
+    .tint-body,.glow{position:absolute;inset:0;pointer-events:none;opacity:0}
+    .tint-body{mix-blend-mode:multiply}
+    .glow{mix-blend-mode:screen}
+    .masked{-webkit-mask-size:contain;mask-size:contain;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center}
+    .mask-body{-webkit-mask-image:url('./assets/img/linear_mask_body.png');mask-image:url('./assets/img/linear_mask_body.png')}
+    .mask-diffuser{-webkit-mask-image:url('./assets/img/linear_mask_diffuser.png');mask-image:url('./assets/img/linear_mask_diffuser.png')}
+
+    /* Panels */
+    .card{background:var(--card);border:1px solid #1f2a44;border-radius:16px;padding:22px}
+    h1{margin:0 0 12px 0;font-size:28px}
+    h2{margin:0 0 16px 0;font-size:20px}
+    .row{margin:18px 0}
+    .row>label{display:block;margin-bottom:8px;font-weight:600}
+    .options{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .btn{padding:10px 14px;border-radius:10px;border:1px solid #1f2a44;background:#111827;color:#e5e7eb;cursor:pointer}
+    .btn.primary{background:var(--primary);border-color:var(--primary);color:#fff}
+    button.opt{padding:9px 13px;border:1px solid #1f2a44;border-radius:10px;background:#111827;color:#e5e7eb;cursor:pointer}
+    button.opt.active{background:var(--primary);border-color:var(--primary);color:#fff}
+    input[type="number"],input[type="text"],input[type="email"],input[type="tel"],select,textarea{padding:10px 12px;border:1px solid var(--ring);border-radius:10px;min-width:120px;background:#0c162a;color:var(--ink)}
+    textarea{width:100%;min-height:90px}
+
+    /* RAL slider */
+    .ral-block{margin-top:10px}
+    .swatch{width:26px;height:26px;border-radius:6px;border:1px solid #1f2a44;box-shadow:inset 0 0 0 1px rgba(255,255,255,.15)}
+    .bar-wrap{display:flex;align-items:center;gap:10px;position:relative;min-height:26px}
+    .bar{position:relative;flex:1;height:18px;border-radius:9px;border:1px solid #1f2a44;background:linear-gradient(to right,#ff0000,#ffff00,#00ff00,#00ffff,#0000ff,#ff00ff,#ff0000);box-shadow:inset 0 0 8px rgba(0,0,0,.25)}
+    .knob{position:absolute;top:50%;transform:translate(-50%,-50%);width:18px;height:18px;border-radius:50%;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.35);background:#111}
+    .help{color:var(--muted);font-size:13px;margin-top:6px}
+  </style>
+</head>
+<body>
+  <main class="container">
+    <h1>ISlight — lineārie LED gaismekļi · konfigurators</h1>
+
+    <div class="grid">
+      <!-- Viewer -->
+      <aside class="viewer">
+        <div class="viewer-card">
+          <div class="product-wrap">
+            <img id="product" src="./assets/img/linear_base.png" alt="Lineārais gaismeklis" />
+            <div id="tintBody" class="tint-body masked mask-body"></div>
+            <div id="glow" class="glow masked mask-diffuser"></div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Config -->
+      <section class="card">
+        <h2>Konfigurācija</h2>
+
+        <!-- Lampas garums -->
+        <div class="row">
+          <label>Lampas garums</label>
+          <div class="options" id="lengths"></div>
+        </div>
+
+        <div class="row two-col" style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+          <div>
+            <label>Lampu skaits</label>
+            <input type="number" id="qty" value="1" min="1" />
+          </div>
+          <div>
+            <label>CCT (Krāsas temperatūra)</label>
+            <div class="options">
+              <label><input type="radio" name="cct" value="3000" checked/> 3000K</label>
+              <label><input type="radio" name="cct" value="4000"/> 4000K</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- RAL krāsa -->
+        <div class="row">
+          <label>RAL krāsa</label>
+          <div class="options">
+            <input type="text" id="ralInput" placeholder="piem., RAL9005" />
+            <div class="swatch" id="ralSwatch"></div>
+          </div>
+          <div class="ral-block">
+            <div class="bar-wrap">
+              <div class="bar" id="ralBar"></div>
+              <div class="knob" id="ralKnob" style="left:0%"></div>
+            </div>
+            <div class="help">Velc pa krāsu joslu vai ievadi RAL kodu.</div>
+          </div>
+        <div class="options" style="margin-top:10px">
+          <button class="btn" id="presetWhite">Balts (RAL9016)</button>
+          <button class="btn" id="presetBlack">Melns (RAL9005)</button>
+        </div>
+
+        </div>
+
+        <div class="row two-col" style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+          <div>
+            <label>Vadība</label>
+            <div class="options"><label><input type="checkbox" id="dali"/> DALI</label></div>
+          </div>
+          <div>
+            <label>Montāža</label>
+            <div class="options"><label><input type="checkbox" id="suspend"/> Ar trosītēm (piekare)</label></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <label>Vai nepieciešama savienojuma kārbiņa?</label>
+          <div class="options"><label><input type="checkbox" id="junctionBox"/> Jā, nepieciešama</label></div>
+        </div>
+
+        <div class="row" id="boxColorRow" style="display:none">
+          <label>Kārbiņas krāsa (ja nepieciešama)</label>
+          <div class="options">
+            <select id="boxColor">
+              <option value="same">Tā pati, kas korpusam</option>
+              <option value="custom">Cita RAL (ievadīt)</option>
+            </select>
+            <input type="text" id="boxRalInput" placeholder="piem., RAL7035" style="display:none" />
+            <div class="swatch" id="boxRalSwatch"></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <label>Vada tips un garums</label>
+          <div class="options">
+            <select id="cableType"><option value="clear">Caurspīdīgs</option><option value="white">Balts</option></select>
+            <input type="number" id="cableLen" min="0" value="1" style="width:120px"/> m
+          </div>
+        </div>
+
+        <!-- Ar/bez uzstādīšanas -->
+        <div class="row">
+          <label>Uzstādīšana</label>
+          <div class="options"><label><input type="checkbox" id="withInstall"/> Ar uzstādīšanu</label></div>
+        </div>
+
+        <div class="row">
+          <label>Kopsavilkums</label>
+          <div class="summary">
+            <div><strong>Cena:</strong> <span id="price">—</span></div>
+            <div><strong>Jauda (apr.):</strong> <span id="power">—</span> W</div>
+            <div><strong>SKU:</strong> <span id="sku">—</span></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <section class="card" style="margin-top:18px">
+      <h2>Klienta dati</h2>
+      <div class="two-col" style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div><label>Vārds, uzvārds *</label><input type="text" id="custName" placeholder="Jānis Bērziņš" required/></div>
+        <div><label>Uzņēmuma nosaukums</label><input type="text" id="company" placeholder="SIA Piemērs"/></div>
+        <div><label>Reģistrācijas Nr.</label><input type="text" id="regNo" placeholder="4010xxxxx"/></div>
+        <div><label>PVN Nr. (ja ir)</label><input type="text" id="vatNo" placeholder="LV4010xxxxx"/></div>
+        <div><label>E-pasta adrese *</label><input type="email" id="email" placeholder="vards@uznemums.lv" required/></div>
+        <div><label>Telefona Nr. *</label><input type="tel" id="phone" placeholder="+371 2xxxxxxx" required/></div>
+        <div style="grid-column:1 / -1"><label>Piegādes adrese</label><input type="text" id="address" placeholder="Iela 1, Rīga, LV-1000"/></div>
+        <div style="grid-column:1 / -1"><label>Papildu komentāri</label><textarea id="notes" placeholder="Jebkādi komentāri vai prasības…"></textarea></div>
+      </div>
+      <div class="cta" style="margin-top:12px"><button class="btn primary" id="createOrder">Izveidot pasūtījumu</button></div>
+    </section>
+  </main>
+
+  <script>
+    // ===== Helpers =====
+    const $ = (s, r=document)=> r.querySelector(s);
+    const $$ = (s, r=document)=> Array.from(r.querySelectorAll(s));
+    const clamp=(n,min,max)=> Math.min(Math.max(n,min),max);
+
+    // Keep masks active; only warn if not found
+    (function(){
+      const tb=$('#tintBody'), gl=$('#glow');
+      const bodyMask = new Image(); bodyMask.onload=()=>{}; bodyMask.onerror=()=>{console.warn('Mask body not found')}; bodyMask.src='./assets/img/linear_mask_body.png';
+      const diffMask = new Image(); diffMask.onload=()=>{}; diffMask.onerror=()=>{console.warn('Mask diffuser not found')}; diffMask.src='./assets/img/linear_mask_diffuser.png';
+      tb.classList.add('masked','mask-body'); gl.classList.add('masked','mask-diffuser');
+    })();
+
+    // ===== Lengths =====
+    const lengths=[]; for(let n=565; n<=3000; n+=280) lengths.push(n);
+    const lenWrap=$('#lengths');
+    lengths.forEach((l,i)=>{ const b=document.createElement('button'); b.className='opt'+(i===0?' active':''); b.textContent=l+' mm'; b.dataset.l=l; lenWrap.appendChild(b); });
+
+    // ===== State =====
+    const state={ length:lengths[0], qty:1, color:'base', customHex:null, cct:3000, suspend:false, dali:false, ral:null,
+      jbox:false, jboxColor:'same', jboxRal:null, cableType:'clear', cableLen:1, withInstall:false };
+
+    // ===== Elements =====
+    const product=$('#product'); const tintBody=$('#tintBody'); const glow=$('#glow');
+    const ralBar=$('#ralBar'); const ralKnob=$('#ralKnob'); const ralSwatch=$('#ralSwatch');
+    const boxRalSwatch=$('#boxRalSwatch');
+    const priceEl=$('#price'), powerEl=$('#power'), skuEl=$('#sku');
+
+    // ===== Pricing =====
+    function calc(){
+      const basePrice = 120 + ((state.length-565)/280)*30; // per lamp demo
+      const subtotal = basePrice * state.qty;
+      const withInstall = subtotal + state.qty*90;
+      priceEl.textContent = state.withInstall ? `${withInstall.toFixed(0)} € ar uzst.` : `${subtotal.toFixed(0)} €`;
+      const power = Math.round(state.length/100*4)*state.qty; powerEl.textContent = power;
+      const colorTag = state.ral ? state.ral : 'RAL';
+      const jboxTag = state.jbox ? `-JB(${state.jboxColor==='custom'?(state.jboxRal||'RAL?'):state.jboxColor})` : '';
+      skuEl.textContent = `LED-${state.length}-${state.cct}-${colorTag}${jboxTag}`;
+    }
+
+    // ===== Image base (fixed) =====
+    function baseImg(){ return './assets/img/linear_base.png'; }
+
+    // ===== Body color (RAL) =====
+    function setBodyColor(hex, tag){
+      state.customHex=hex; state.ral=(tag||null);
+      ralSwatch.style.background = (hex || 'transparent');
+      if(hex){ tintBody.style.opacity=.95; tintBody.style.background=hex; }
+      else{ tintBody.style.opacity=0; }
+      calc();
+    }
+
+    const RAL_NEUTRALS={'RAL9003':'#f4f4f4','RAL9016':'#f6f7f7','RAL9006':'#a5a7aa','RAL9007':'#8f9193','RAL9005':'#0a0a0a','RAL7016':'#383e42','RAL7035':'#cfd3d4','RAL7021':'#2f353b','RAL7043':'#4e5451'};
+    function hslToHex(h,s,l){ s/=100; l/=100; const C=(1-Math.abs(2*l-1))*s; const X=C*(1-Math.abs((h/60)%2-1)); const m=l-C/2; let r=0,g=0,b=0; if(0<=h&&h<60){r=C;g=X}else if(60<=h&&h<120){r=X;g=C}else if(120<=h&&h<180){g=C;b=X}else if(180<=h&&h<240){g=X;b=C}else if(240<=h&&h<300){r=X;b=C}else{r=C;b=X} const R=Math.round((r+m)*255), G=Math.round((g+m)*255), B=Math.round((b+m)*255); return '#'+[R,G,B].map(v=>v.toString(16).padStart(2,'0')).join(''); }
+    function approxRalHex(code){ const m=code.match(/RAL\s*(\d{4})/i); if(!m) return null; const n=parseInt(m[1],10); const k=Math.floor(n/1000); if(k===9){ const last=n%100; const l=100-clamp(last,0,99); const g=Math.floor(255*l/100); return `#${g.toString(16).padStart(2,'0').repeat(3)}`; } if(k===7){ const g=60+(n%100)/100*120; const x=Math.floor(255*(g/180)); return `rgb(${x+60},${x+60},${x+60})`; } const hues={1:50,2:30,3:5,4:290,5:220,6:140,8:25}; const H=(hues[k]||200); return hslToHex(H,70,55); }
+
+    // RAL bar interactions (mouse + touch)
+    function knobTo(x){ ralKnob.style.left = clamp(x,0,100)+'%'; }
+    function setFromHuePos(p){ const hue=Math.round(p*359); const hex=hslToHex(hue,70,45); knobTo(p*100); setBodyColor(hex, null); }
+    function pickFromBarClientX(clientX){ const rect=ralBar.getBoundingClientRect(); const p = clamp((clientX-rect.left)/rect.width,0,1); setFromHuePos(p); }
+    ralBar.addEventListener('mousedown', e=>{ pickFromBarClientX(e.clientX); const move=(ev)=>pickFromBarClientX(ev.clientX); const up=()=>{window.removeEventListener('mousemove',move);window.removeEventListener('mouseup',up)}; window.addEventListener('mousemove',move); window.addEventListener('mouseup',up); });
+    ralBar.addEventListener('click', e=>{ pickFromBarClientX(e.clientX); });
+    ralBar.addEventListener('touchstart', e=>{ if(e.touches[0]) pickFromBarClientX(e.touches[0].clientX); });
+    ralBar.addEventListener('touchmove', e=>{ if(e.touches[0]) pickFromBarClientX(e.touches[0].clientX); });
+
+    $('#ralInput').addEventListener('input', e=>{
+      const raw=e.target.value.toUpperCase().replace(/\s+/g,''); if(!/^RAL\d{4}$/.test(raw)) return;
+      let hex = RAL_NEUTRALS[raw] || approxRalHex(raw);
+      if(hex){ setBodyColor(hex, raw);
+        // try to move knob to matching hue
+        (function(){ function hexToRgb(h){const v=parseInt(h.slice(1),16);return{r:(v>>16)&255,g:(v>>8)&255,b:v&255}} function rgbToHsl(r,g,b){ r/=255; g/=255; b/=255; const max=Math.max(r,g,b),min=Math.min(r,g,b); let h,s,l=(max+min)/2; if(max===min){h=s=0}else{const d=max-min; s=l>0.5? d/(2-max-min): d/(max+min); switch(max){case r:h=(g-b)/d+(g<b?6:0);break;case g:h=(b-r)/d+2;break;case b:h=(r-g)/d+4;break;} h*=60;} return {h:h||0} } const {r,g,b}=hexToRgb(hex); const {h}=rgbToHsl(r,g,b); knobTo((h/359)*100); })();
+      }
+    });
+
+    // ===== CCT glow =====
+    function applyGlow(){
+      if(state.cct==3000){
+        glow.style.opacity=.65;
+        glow.style.background='radial-gradient(ellipse at 50% 55%, rgba(255,200,120,.70) 0%, rgba(255,180,90,.30) 45%, rgba(0,0,0,0) 55%)';
+      } else {
+        glow.style.opacity=.58;
+        glow.style.background='radial-gradient(ellipse at 50% 55%, rgba(255,255,255,.80) 0%, rgba(255,255,255,.35) 45%, rgba(0,0,0,0) 55%)';
+      }
+    }
+
+    // ===== Listeners =====
+    lenWrap.addEventListener('click', (e)=>{ const btn=e.target.closest('button.opt'); if(btn){ $$('#lengths .opt').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); state.length=+btn.dataset.l; calc(); }});
+    $('#qty').addEventListener('input', e=>{ state.qty=(+e.target.value||1); calc(); });
+    $$('input[name="cct"]').forEach(r=> r.addEventListener('change', ()=>{ state.cct=+r.value; applyGlow(); calc(); }));
+    $('#dali').addEventListener('change', e=>{ state.dali=e.target.checked; calc(); });
+    $('#suspend').addEventListener('change', e=>{ state.suspend=e.target.checked; /* keep same image */ });
+
+    // junction box
+    $('#junctionBox').addEventListener('change', e=>{ state.jbox = e.target.checked; $('#boxColorRow').style.display = state.jbox ? '' : 'none'; calc(); });
+    $('#boxColor').addEventListener('change', e=>{ state.jboxColor = e.target.value; $('#boxRalInput').style.display = e.target.value==='custom' ? '' : 'none'; if(e.target.value!=='custom'){ state.jboxRal=null; boxRalSwatch.style.background='transparent'; } calc(); });
+    $('#boxRalInput').addEventListener('input', e=>{ const raw=e.target.value.toUpperCase().replace(/\s+/g,''); if(!/^RAL\d{4}$/.test(raw)) return; let hex = RAL_NEUTRALS[raw] || approxRalHex(raw); if(hex){ state.jboxRal = raw; boxRalSwatch.style.background = hex; state.jboxColor='custom'; calc(); }});
+
+    // cable & install
+    $('#cableType').addEventListener('change', e=>{ state.cableType=e.target.value; });
+    $('#cableLen').addEventListener('input', e=>{ state.cableLen=(+e.target.value||0); });
+    $('#withInstall').addEventListener('change', e=>{ state.withInstall=e.target.checked; calc(); });
+
+    // order
+    const FORMSPREE_ENDPOINT=null; const EMAIL_TO='orders@example.com';
+    function buildOrderPayload(){ const color = state.ral ? `${state.ral} (${state.customHex})` : 'RAL'; const jbox = state.jbox ? (state.jboxColor==='custom' ? `Jā, ${state.jboxRal}` : `Jā, ${state.jboxColor}`) : 'Nē'; return {config:{length:state.length, qty:state.qty, cct:state.cct, dali:state.dali, suspend:state.suspend, color, cableType:state.cableType, cableLen:state.cableLen, junctionBox:jbox, price:priceEl.textContent, power:powerEl.textContent+" W", sku:skuEl.textContent}, customer:{name:$('#custName').value.trim(), company:$('#company').value.trim(), regNo:$('#regNo').value.trim(), vatNo:$('#vatNo').value.trim(), email:$('#email').value.trim(), phone:$('#phone').value.trim(), address:$('#address').value.trim(), notes:$('#notes').value.trim()}} }
+    function validateCustomer(){ const name=$('#custName').value.trim(), email=$('#email').value.trim(), phone=$('#phone').value.trim(); if(!name||!email||!phone){ alert('Lūdzu aizpildi obligātos laukus: Vārds, E-pasts, Telefons.'); return false; } const re=/^[^\s@]+@[^\s@]+\.[^\s@]+$/; if(!re.test(email)){ alert('E-pasta formāts nav pareizs.'); return false; } return true; }
+    function payloadToText(p){ const c=p.config,u=p.customer; return `Pasūtījums (lineārais gaismeklis)\n\n`+`— Garums: ${c.length} mm\n`+`— Skaits: ${c.qty}\n`+`— CCT: ${c.cct}K\n`+`— Vadība: ${c.dali?'DALI':'Standarts'}\n`+`— Montāža: ${c.suspend?'Piekare ar trosītēm':'Virsmas'}\n`+`— Krāsa: ${c.color}\n`+`— Vads: ${c.cableType}, ${c.cableLen} m\n`+`— Savienojuma kārbiņa: ${c.junctionBox}\n`+`— Cena: ${c.price}\n`+`— Jauda: ${c.power}\n`+`— SKU: ${c.sku}\n\n`+`Klienta dati\n`+`— Vārds, uzvārds: ${u.name}\n`+`— Uzņēmums: ${u.company}\n`+`— Reģ. Nr.: ${u.regNo}\n`+`— PVN Nr.: ${u.vatNo}\n`+`— E-pasts: ${u.email}\n`+`— Telefons: ${u.phone}\n`+`— Adrese: ${u.address}\n`+`— Komentāri: ${u.notes}`; }
+    async function submitOrder(){ if(!validateCustomer()) return; const data=buildOrderPayload(); const text=payloadToText(data); if(FORMSPREE_ENDPOINT){ try{ const res=await fetch(FORMSPREE_ENDPOINT,{method:'POST',headers:{'Accept':'application/json','Content-Type':'application/json'},body:JSON.stringify(data)}); if(res.ok){ alert('Pasūtījums nosūtīts! Paldies.'); } else { const t=await res.text(); alert('Neizdevās nosūtīt (servera atbilde). '+t); } }catch(err){ alert('Neizdevās nosūtīt: '+err.message); } } else { const subject=encodeURIComponent('Pasūtījums – lineārais gaismeklis'); const body=encodeURIComponent(text); const url=`mailto:${encodeURIComponent('orders@example.com')}?subject=${subject}&body=${body}`; window.location.href=url; } }
+    $('#createOrder').addEventListener('click', submitOrder);
+
+    // ===== Init =====
+    product.src = baseImg();
+    applyGlow();
+    calc();
+  </script>
+</body>
+</html>
